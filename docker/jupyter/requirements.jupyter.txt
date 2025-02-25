@@ -1,0 +1,6 @@
+# Jupyter analysis dependencies
+pandas
+matplotlib
+geopandas
+netCDF4
+# Add other libraries as needed 
