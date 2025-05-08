@@ -1,5 +1,5 @@
 # Use a GDAL image from OSGeo as the base
-ARG GDAL_VERSION=ubuntu-small-3.10.2
+ARG GDAL_VERSION=ubuntu-small-3.10.3
 FROM ghcr.io/osgeo/gdal:${GDAL_VERSION}
 
 # Set noninteractive mode for apt-get
@@ -38,7 +38,6 @@ RUN pip install --break-system-packages --no-cache-dir \
     odc-geo \
     "git+https://github.com/opendatacube/datacube-core.git@develop-1.9" \
     "git+https://github.com/opendatacube/eo-datasets.git@integrate-1.9" \
-    "odc-cloud==0.2.3" \
     boto3 \
     importlib_resources \
     psycopg2-binary \
@@ -46,7 +45,7 @@ RUN pip install --break-system-packages --no-cache-dir \
     odc-ui \
     odc-stats \
     odc-io \
-    "odc-cloud[ASYNC]" \
+    odc-cloud \
     odc-dscache
 
 # Copy and install additional Jupyter-specific dependencies
