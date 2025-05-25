@@ -1,5 +1,5 @@
 # Use a GDAL image from OSGeo as the base
-ARG GDAL_VERSION=ubuntu-small-3.10.3
+ARG GDAL_VERSION=ubuntu-small-3.11.0
 FROM ghcr.io/osgeo/gdal:${GDAL_VERSION}
 
 # Set noninteractive mode for apt-get
