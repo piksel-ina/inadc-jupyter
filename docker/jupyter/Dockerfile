@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
       postgresql-client \
       libpq-dev \
       postgresql-server-dev-all \
+      gettext-base \
     && apt-get autoclean \
     && rm -rf /var/lib/{apt,dpkg,cache,log}
 
@@ -52,28 +53,39 @@ RUN pip install --break-system-packages --no-cache-dir \
 COPY docker/jupyter/requirements.jupyter.txt /tmp/requirements.jupyter.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.jupyter.txt
 
-# Expose port 8888 for Jupyter Notebook
-EXPOSE 8888
+# Create a non-root user for Jupyter
+RUN useradd -ms /bin/bash jupyter
 
 # Ensure the notebooks directory exists and set as working directory
 RUN mkdir -p /home/venv/notebooks
 WORKDIR /home/venv/notebooks
 
+# Copy datacube config template from root directory
+COPY datacube.conf.template /home/venv/.datacube.conf.template
+
+# Copy and setup entrypoint script
+COPY docker/jupyter/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Change ownership of relevant directories
+RUN chown -R jupyter:jupyter /home/venv
+
 # Install tini via apt-get to ensure correct binary
 RUN apt-get update && apt-get install -y tini
-ENTRYPOINT ["/usr/bin/tini", "--"]
+
+# Expose port 8888 for Jupyter Notebook
+EXPOSE 8888
 
 # Set Jupyter environment variables
 ENV JUPYTER_PORT=8888
 ENV JUPYTER_IP=0.0.0.0
 ENV JUPYTER_ENABLE_LAB=yes
 
-# Create a non-root user for Jupyter
-RUN useradd -ms /bin/bash jupyter
-RUN chown -R jupyter:jupyter /home/venv
-
 # Switch to non-root user
 USER jupyter
+
+# Use custom entrypoint with tini
+ENTRYPOINT ["/usr/bin/tini", "--", "/entrypoint.sh"]
 
 # Start Jupyter Lab with proper configuration
 CMD ["jupyter", "lab", "--ip", "0.0.0.0", "--port", "8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]
