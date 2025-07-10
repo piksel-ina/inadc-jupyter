@@ -23,7 +23,6 @@ RUN apt-get update && apt-get install -y \
 USER $NB_USER
 
 # Install packages in specific order to avoid conflicts
-# First install binary packages that are known to work
 RUN pip install --no-cache-dir \
     psycopg2-binary \
     boto3 \
@@ -45,7 +44,7 @@ RUN pip install --no-cache-dir \
     dea-tools \
     wofs
 
-# Finally, handle the problematic hdstats package with multiple fallback strategies
+# Finally, handle the hdstats package
 RUN pip install --no-cache-dir hdstats || \
     pip install --no-cache-dir --force-reinstall --no-deps \
         --trusted-host packages.dea.ga.gov.au \
