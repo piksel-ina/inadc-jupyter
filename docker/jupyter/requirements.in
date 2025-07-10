@@ -1,8 +1,0 @@
-# Jupyter analysis dependencies
-pandas
-matplotlib
-geopandas
-netCDF4
-folium
-
-# Add other libraries as needed 
