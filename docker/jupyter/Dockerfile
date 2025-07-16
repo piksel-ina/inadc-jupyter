@@ -34,10 +34,15 @@ RUN pip install --no-cache-dir \
     dask-ml \
     leafmap \
     localtileserver \
-    country-bounding-boxes
+    country-bounding-boxes \
+    eo-tides \
+    odc-stac==0.4.0 \
+    odc-loader==0.5.1 \
+    datacube
 
-# Install git-based package
-RUN pip install --no-cache-dir git+https://github.com/digitalearthpacific/dep-tools.git
+# Add some coastal data science packages
+RUN pip install --no-cache-dir --force-reinstall --no-deps \
+    git+https://github.com/auspatious/pyTMD.git@update-with-INATIDES-compatibility
 
 # Install DEA tools separately
 RUN pip install --no-cache-dir \
