@@ -1,4 +1,4 @@
-# Piksel Sandbox
+![Piksel-sandbox-header-image](https://github.com/piksel-ina/piksel-document/blob/main/assets/logo/piksel-header-large.png?raw=true "Piksel Sandbox")
 
 ## Overview
 
@@ -7,7 +7,7 @@ The **Piksel Sandbox** provides an interactive environment for introductory anal
 ## Environment Specifications
 
 - Complimentary access to a managed cloud-based workspace
-- Configuration: 2 processing cores, 16 GB RAM, 10 GB storage
+- Configuration: at minimum, 2 processing cores, 12 GB RAM, 10 GB storage
 - Pre-installed Python packages tailored for geospatial and Earth Observation workflows
 - Structured Jupyter notebook tutorials to support initial onboarding
 
@@ -36,4 +36,3 @@ This folder contains translations of the notebooks into Indonesian, based on the
 
 > **Note:**  
 > Updates and new features may be developed first in either the English or Indonesian notebooks, depending on community needs and preferences. Both versions are maintained and may occasionally be ahead or behind each other as translations and updates are completed.
-
