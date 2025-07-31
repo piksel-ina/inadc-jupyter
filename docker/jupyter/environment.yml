@@ -1,0 +1,171 @@
+name: sandbox-base
+channels:
+  - conda-forge
+  - defaults
+channel_priority: strict
+
+dependencies:
+  # ========================================
+  # CORE
+  # ========================================
+  - python>=3.10
+  - pip
+  - cython
+  - setuptools
+  - wheel
+  - numba
+
+  # ========================================
+  # ESSENTIAL DEVELOPMENT TOOLS
+  # ========================================
+  - git
+  - wget
+  - curl
+  - unzip
+  - htop
+  - tmux
+  - vim
+  - ipython
+  - gh
+
+  # ========================================
+  # DATABASE CONNECTIVITY
+  # ========================================
+  # - psycopg2  # installed psycopg2-binary in pip
+  - sqlalchemy
+  - geoalchemy2
+  - pyarrow
+  - fastparquet
+  - alembic
+
+  # ========================================
+  # CORE SCIENTIFIC STACK
+  # ========================================
+  - numpy
+  - pandas
+  - matplotlib-base
+  - scipy
+  - bottleneck
+  - seaborn
+  - openpyxl
+  - h5py
+  - tifffile
+  - pillow
+
+  # ========================================
+  # ARRAY & PARALLEL COMPUTING
+  # ========================================
+  - xarray
+  - dask
+  - fsspec
+  - zarr
+  - netcdf4
+
+  # ========================================
+  # ESSENTIAL GEOSPATIAL
+  # ========================================
+  - gdal
+  - datacube==1.9.6
+  - rasterio
+  - geopandas
+  - shapely
+  - pyproj
+  - contextily
+  - plotly
+  - fiona
+  - libspatialindex
+  - rtree
+  - proj
+  - pyyaml
+
+  # ========================================
+  # JUPYTER ESSENTIALS
+  # ========================================
+  - jupyterlab>=4.0
+  - ipywidgets
+  - ipyleaflet
+  - nbconvert
+  - jupyter-resource-usage
+  - jupyterlab-git
+  - jupyter-server-proxy
+  - jupyterlab_code_formatter
+  - jupyterlab-myst
+  - jupyterlab-lsp
+  - jupyter-panel-proxy
+  - nodejs
+
+  # ========================================
+  # CLOUD & DATA ACCESS
+  # ========================================
+  - boto3
+  - s3fs
+  - requests
+  - aiohttp
+  - pystac
+  - pystac-client
+
+  # ========================================
+  # CODE QUALITY & DEVELOPMENT
+  # ========================================
+  - black
+  - ruff
+  - isort
+
+  # ========================================
+  # BASIC MACHINE LEARNING
+  # ========================================
+  - scikit-learn
+
+  # ========================================
+  # ADVACED GOESPATIAL
+  # ========================================
+  - cartopy
+  - folium
+  - rio-cogeo
+  - rioxarray
+  - stackstac
+  - geocube
+  - earthaccess
+  - planetary-computer
+  - morecantile
+  - lonboard
+  - geoviews-core
+  - spyndex
+  - geopy
+  - owslib
+
+  # ========================================
+  # EARTH OBSERVATION
+  # ========================================
+  - satpy
+  - pyresample
+  - pyorbital
+  - pyhdf
+
+  # ========================================
+  # ADVANCED VISUALIZATION
+  # ========================================
+  - holoviews
+  - hvplot
+  - panel
+  - datashader
+  - bokeh
+  - ipympl
+
+  # ========================================
+  # PIP-ONLY DEPENDENCIES
+  # ========================================
+  - pip:
+      - psycopg2-binary
+      - leafmap
+      - localtileserver
+      - country-bounding-boxes
+      - odc-stac==0.4.0
+      - odc-loader==0.5.1
+      - odc-geo
+      - eodatasets3
+      - odc-algo
+      - odc-stats
+      - odc-ui
+      - dea-tools
+      - odc-dscache
