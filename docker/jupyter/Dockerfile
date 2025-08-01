@@ -72,19 +72,22 @@ COPY docker/jupyter/requirements.in .
 
 # Create environment directly from conda-lock.yml
 RUN echo "Creating environment from 'conda-lock.yml'..." && \
-    micromamba install conda-lock && \
-    micromamba run conda-lock install -p /env && \
-    micromamba clean --all --yes
-
-# Upgrade pip inside the conda environment (using direct path)
-RUN echo "Upgrading pip in conda environment..." && \
-    /env/bin/python -m pip install --no-cache-dir --upgrade pip
-
-# Install pip dependencies
-RUN echo "Installing pip dependencies..." && \
+    micromamba create -p /env -f conda-lock.yml && \
+    /env/bin/python -m pip install --no-cache-dir --upgrade pip && \
+    echo "Installing pip dependencies..." && \
     /env/bin/pip install --no-cache-dir pip-tools && \
     /env/bin/pip-compile requirements.in && \
-    /env/bin/pip install --no-cache-dir -r requirements.txt
+    /env/bin/pip install --no-cache-dir -r requirements.txt && \
+    # Clean up everything in one layer
+    micromamba clean --all --yes && \
+    /env/bin/pip cache purge && \
+    rm -rf /tmp/* /var/tmp/* && \
+    rm -rf /env/conda-meta/* && \
+    rm -rf /env/lib/python*/site-packages/*/tests && \
+    rm -rf /env/lib/python*/site-packages/*/__pycache__ && \
+    find /env -name "*.pyc" -delete && \
+    find /env -name "*.pyo" -delete && \
+    find /env -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 
 # Install other deps
 RUN pip install --no-cache-dir --force-reinstall --no-deps \
@@ -118,14 +121,10 @@ RUN echo "Setup 'start' script as entry point..." && \
     else \
         echo "No start script found, creating default entry point..." && \
         echo '#!/bin/bash' > /srv/start && \
-        echo 'jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root' >> /srv/start && \
+        echo 'jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --ServerApp.token='${JUPYTER_TOKEN:-}' --ServerApp.password='' --ServerApp.allow_origin='*' --ServerApp.allow_remote_access=True' >> /srv/start && \
         chmod +x /srv/start; \
     fi
-
-# Create work directory structure that matches the volume mounts
-RUN mkdir -p ${HOME}/work/notebooks ${HOME}/work/products ${HOME}/work/data && \
-    chown -R ${NB_USER}:${NB_USER} ${HOME}/work
-
+    
 # Switch to non-root user
 USER ${NB_USER}
 WORKDIR ${HOME}
