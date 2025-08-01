@@ -49,7 +49,8 @@ RUN pip install --upgrade --no-cache-dir \
     odc-stac==0.4.0 \
     odc-loader==0.5.1 \
     datacube==1.9.6 \
-    git+https://github.com/GeoscienceAustralia/dea-intertidal.git
+    git+https://github.com/GeoscienceAustralia/dea-intertidal.git \
+    git+https://github.com/auspatious/coastlines.git
 
 # Add some data science packages
 RUN pip install --no-cache-dir --force-reinstall --no-deps \
