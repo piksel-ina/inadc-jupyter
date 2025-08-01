@@ -8,7 +8,7 @@ dependencies:
   # ========================================
   # CORE
   # ========================================
-  - python>=3.10
+  - python>=3.12
   - pip
   - cython
   - setuptools
@@ -165,7 +165,6 @@ dependencies:
       - odc-geo
       - eodatasets3
       - odc-algo
-      - odc-stats
       - odc-ui
       - dea-tools
       - odc-dscache
