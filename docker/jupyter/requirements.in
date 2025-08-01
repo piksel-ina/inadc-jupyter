@@ -1,0 +1,9 @@
+GDAL==3.11.0.*
+git+https://github.com/pyTMD/pyTMD.git
+git+https://github.com/GeoscienceAustralia/dea-intertidal.git
+git+https://github.com/auspatious/coastlines.git
+git+https://github.com/piksel-ina/piksel-notebooks.git
+https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl
+eo-tides
+wofs 
+odc-stats
