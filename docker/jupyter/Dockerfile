@@ -17,6 +17,10 @@ RUN apt-get update && apt-get install -y \
     postgresql-client \
     python3-dev \
     libpython3-dev \
+    # Some utility tools \
+    htop \
+    wget \
+    fish \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -44,7 +48,8 @@ RUN pip install --upgrade --no-cache-dir \
     eo-tides \
     odc-stac==0.4.0 \
     odc-loader==0.5.1 \
-    datacube==1.9.6
+    datacube==1.9.6 \
+    git+https://github.com/GeoscienceAustralia/dea-intertidal.git
 
 # Add some data science packages
 RUN pip install --no-cache-dir --force-reinstall --no-deps \
