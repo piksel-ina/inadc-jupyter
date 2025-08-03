@@ -1,4 +1,4 @@
-FROM mambaorg/micromamba:2.3-debian11 as sandbox-conda
+FROM mambaorg/micromamba:2.3-debian11 AS sandbox-build
 
 ENV CONDA_ENV=notebook \
     DEBIAN_FRONTEND=noninteractive \
@@ -8,21 +8,21 @@ ENV CONDA_ENV=notebook \
     SHELL=/bin/bash \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
-    CONDA_DIR=/srv/conda
+    CONDA_DIR=/opt/conda
 
 # Additional environment setup
-ENV GDAL_DRIVER_PATH=/env/lib/gdalplugins \
-    PROJ_LIB=/env/share/proj \
-    GDAL_DATA=/env/share/gdal \
+ENV GDAL_DRIVER_PATH=/opt/conda/lib/gdalplugins \
+    PROJ_LIB=/opt/conda/share/proj \
+    GDAL_DATA=/opt/conda/share/gdal \
     SQLALCHEMY_SILENCE_UBER_WARNING=1 \
     USE_PYGEOS=0 \
     TZ=UTC
 
 # Path and Python environment setup
-ENV NB_PYTHON_PREFIX=/env \
+ENV NB_PYTHON_PREFIX=/opt/conda \
     HOME=/home/${NB_USER}
 
-ENV PATH=${NB_PYTHON_PREFIX}/bin:${CONDA_DIR}/bin:/env/bin:${PATH} \
+ENV PATH=${NB_PYTHON_PREFIX}/bin:${CONDA_DIR}/bin:/usr/local/bin:${PATH} \
     DASK_ROOT_CONFIG=${CONDA_DIR}/etc
 
 # Switch to root to perform system setup
@@ -70,26 +70,26 @@ COPY docker/jupyter/conda-lock.yml .
 COPY docker/jupyter/requirements.in .
 
 # Create environment directly from conda-lock.yml
-RUN echo "Creating environment from 'conda-lock.yml'..." && \
-    micromamba create -p /env -f conda-lock.yml && \
-    /env/bin/python -m pip install --no-cache-dir --upgrade pip && \
+RUN echo "Installing into base environment from 'conda-lock.yml'..." && \
+    micromamba install -y -n base -f conda-lock.yml && \
+    micromamba clean --all --yes && \
     echo "Installing pip dependencies..." && \
-    /env/bin/pip install --no-cache-dir pip-tools && \
-    /env/bin/pip-compile requirements.in && \
-    /env/bin/pip install --no-cache-dir -r requirements.txt && \
+    /opt/conda/bin/pip install --no-cache-dir pip-tools && \
+    /opt/conda/bin/pip-compile requirements.in && \
+    /opt/conda/bin/pip install --no-cache-dir -r requirements.txt && \
     # Clean up everything in one layer
     micromamba clean --all --yes && \
-    /env/bin/pip cache purge && \
+    /opt/conda/bin/pip cache purge && \
     rm -rf /tmp/* /var/tmp/* && \
-    rm -rf /env/conda-meta/* && \
-    rm -rf /env/lib/python*/site-packages/*/tests && \
-    rm -rf /env/lib/python*/site-packages/*/__pycache__ && \
-    find /env -name "*.pyc" -delete && \
-    find /env -name "*.pyo" -delete && \
-    find /env -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+    rm -rf /opt/conda/conda-meta/* && \
+    rm -rf /opt/conda/lib/python*/site-packages/*/tests && \
+    rm -rf /opt/conda/lib/python*/site-packages/*/__pycache__ && \
+    find /opt/conda -name "*.pyc" -delete && \
+    find /opt/conda -name "*.pyo" -delete && \
+    find /opt/conda -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 
 # Install other deps
-RUN pip install --no-cache-dir --force-reinstall --no-deps \
+RUN /opt/conda/bin/pip install --no-cache-dir --force-reinstall --no-deps \
     git+https://github.com/auspatious/pyTMD.git@update-with-INATIDES-compatibility \
     https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl
 
@@ -111,9 +111,9 @@ RUN echo "Setup 'postBuild' script for JupyterLab configuration..." && \
     fi
 
 # Runtime Stage: Copy built artifacts into a slimmer image
-FROM mambaorg/micromamba:2.3-debian11
+FROM mambaorg/micromamba:2.3-debian11 AS sandbox-final
 
-# Re-declare environment variables for runtime stage
+# Re-declare environment variables for runtime stage (updated to /opt/conda paths)
 ENV CONDA_ENV=notebook \
     DEBIAN_FRONTEND=noninteractive \
     NB_USER=jovyan \
@@ -122,16 +122,16 @@ ENV CONDA_ENV=notebook \
     SHELL=/bin/bash \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
-    CONDA_DIR=/srv/conda \
-    GDAL_DRIVER_PATH=/env/lib/gdalplugins \
-    PROJ_LIB=/env/share/proj \
-    GDAL_DATA=/env/share/gdal \
+    CONDA_DIR=/opt/conda \
+    GDAL_DRIVER_PATH=/opt/conda/lib/gdalplugins \
+    PROJ_LIB=/opt/conda/share/proj \
+    GDAL_DATA=/opt/conda/share/gdal \
     SQLALCHEMY_SILENCE_UBER_WARNING=1 \
     USE_PYGEOS=0 \
     TZ=UTC \
-    NB_PYTHON_PREFIX=/env \
+    NB_PYTHON_PREFIX=/opt/conda \
     HOME=/home/${NB_USER} \
-    PATH=${NB_PYTHON_PREFIX}/bin:${CONDA_DIR}/bin:/env/bin:${PATH} \
+    PATH=${NB_PYTHON_PREFIX}/bin:${CONDA_DIR}/bin:/usr/local/bin:${PATH} \
     DASK_ROOT_CONFIG=${CONDA_DIR}/etc
 
 # Switch to root for setup
@@ -156,15 +156,15 @@ RUN apt-get update --fix-missing > /dev/null && \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy user/group setup and sudoers from build stage
-COPY --from=sandbox-conda /etc/passwd /etc/passwd
-COPY --from=sandbox-conda /etc/group /etc/group
-COPY --from=sandbox-conda /etc/sudoers /etc/sudoers
-COPY --from=sandbox-conda /etc/sudoers.d /etc/sudoers.d
+COPY --from=sandbox-build /etc/passwd /etc/passwd
+COPY --from=sandbox-build /etc/group /etc/group
+COPY --from=sandbox-build /etc/sudoers /etc/sudoers
+COPY --from=sandbox-build /etc/sudoers.d /etc/sudoers.d
 
 # Copy the built Conda environment and user home
-COPY --from=sandbox-conda --chown=${NB_UID}:${NB_GID} /env /env
-COPY --from=sandbox-conda --chown=${NB_UID}:${NB_GID} /home/${NB_USER} /home/${NB_USER}
-COPY --from=sandbox-conda --chown=${NB_UID}:${NB_GID} /srv /srv
+COPY --from=sandbox-build --chown=${NB_UID}:${NB_GID} /opt/conda /opt/conda
+COPY --from=sandbox-build --chown=${NB_UID}:${NB_GID} /home/${NB_USER} /home/${NB_USER}
+COPY --from=sandbox-build --chown=${NB_UID}:${NB_GID} /srv /srv
 
 # Copy startup script (create this in your build context, e.g., docker/jupyter/start-notebook.sh)
 COPY docker/jupyter/start-notebook.sh /usr/local/bin/start-notebook.sh
@@ -172,6 +172,14 @@ RUN chmod +x /usr/local/bin/start-notebook.sh
 
 # Switch to non-root user
 USER ${NB_UID}
+
+# Update .bashrc and Add Fish Support
+RUN echo 'eval "$(micromamba shell hook --shell bash)"' >> ~/.bashrc && \
+    echo 'micromamba activate base' >> ~/.bashrc && \
+    # For fish support (if users run fish in terminal)
+    mkdir -p ~/.config/fish && \
+    echo 'eval (micromamba shell hook --shell fish)' >> ~/.config/fish/config.fish && \
+    echo 'micromamba activate base' >> ~/.config/fish/config.fish
 
 # Set working directory
 WORKDIR ${HOME}
