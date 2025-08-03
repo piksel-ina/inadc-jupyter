@@ -1,6 +1,5 @@
 FROM mambaorg/micromamba:2.3-debian11 as sandbox-conda
 
-# Set environment variables
 ENV CONDA_ENV=notebook \
     DEBIAN_FRONTEND=noninteractive \
     NB_USER=jovyan \
@@ -111,27 +110,74 @@ RUN echo "Setup 'postBuild' script for JupyterLab configuration..." && \
         echo "No postBuild script found, skipping..."; \
     fi
 
-# Copy and setup start script if it exists (from root context)
-COPY docker/jupyter/start* ./
-RUN echo "Setup 'start' script as entry point..." && \
-    if [ -f "start" ]; then \
-        echo "Found start script, setting up as entry point..." && \
-        chmod +x start && \
-        cp start /srv/start; \
-    else \
-        echo "No start script found, creating default entry point..." && \
-        echo '#!/bin/bash' > /srv/start && \
-        echo 'jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --ServerApp.token='${JUPYTER_TOKEN:-}' --ServerApp.password='' --ServerApp.allow_origin='*' --ServerApp.allow_remote_access=True' >> /srv/start && \
-        chmod +x /srv/start; \
-    fi
-    
+# Runtime Stage: Copy built artifacts into a slimmer image
+FROM mambaorg/micromamba:2.3-debian11
+
+# Re-declare environment variables for runtime stage
+ENV CONDA_ENV=notebook \
+    DEBIAN_FRONTEND=noninteractive \
+    NB_USER=jovyan \
+    NB_UID=1000 \
+    NB_GID=100 \
+    SHELL=/bin/bash \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    CONDA_DIR=/srv/conda \
+    GDAL_DRIVER_PATH=/env/lib/gdalplugins \
+    PROJ_LIB=/env/share/proj \
+    GDAL_DATA=/env/share/gdal \
+    SQLALCHEMY_SILENCE_UBER_WARNING=1 \
+    USE_PYGEOS=0 \
+    TZ=UTC \
+    NB_PYTHON_PREFIX=/env \
+    HOME=/home/${NB_USER} \
+    PATH=${NB_PYTHON_PREFIX}/bin:${CONDA_DIR}/bin:/env/bin:${PATH} \
+    DASK_ROOT_CONFIG=${CONDA_DIR}/etc
+
+# Switch to root for setup
+USER root
+
+# Install only runtime system packages (no build tools)
+RUN apt-get update --fix-missing > /dev/null && \
+    apt-get install -y \
+        apt-utils \
+        wget \
+        zip \
+        tzdata \
+        curl \
+        git \
+        libpq-dev \
+        postgresql-client \
+        htop \
+        fish \
+        sudo \
+        tini \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy user/group setup and sudoers from build stage
+COPY --from=sandbox-conda /etc/passwd /etc/passwd
+COPY --from=sandbox-conda /etc/group /etc/group
+COPY --from=sandbox-conda /etc/sudoers /etc/sudoers
+COPY --from=sandbox-conda /etc/sudoers.d /etc/sudoers.d
+
+# Copy the built Conda environment and user home
+COPY --from=sandbox-conda --chown=${NB_UID}:${NB_GID} /env /env
+COPY --from=sandbox-conda --chown=${NB_UID}:${NB_GID} /home/${NB_USER} /home/${NB_USER}
+COPY --from=sandbox-conda --chown=${NB_UID}:${NB_GID} /srv /srv
+
+# Copy startup script (create this in your build context, e.g., docker/jupyter/start-notebook.sh)
+COPY docker/jupyter/start-notebook.sh /usr/local/bin/start-notebook.sh
+RUN chmod +x /usr/local/bin/start-notebook.sh
+
 # Switch to non-root user
-USER ${NB_USER}
+USER ${NB_UID}
+
+# Set working directory
 WORKDIR ${HOME}
 
-# Make micromamba available to users for dependency management
-RUN echo 'eval "$(micromamba shell hook --shell bash)"' >> ~/.bashrc && \
-    echo 'micromamba activate /env' >> ~/.bashrc
+# Set ENTRYPOINT to use tini for signal handling
+ENTRYPOINT ["tini", "-g", "--"]
 
-# Set entry point (will be overridden by docker-compose command)
-ENTRYPOINT ["/srv/start"]
+# Set CMD to start Jupyter Lab by default
+CMD ["start-notebook.sh"]
