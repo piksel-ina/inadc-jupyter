@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+
+echo "Installing JupyterLab LSP servers..."
+
+echo "Installing LSP servers..."
+
+# Python LSP server
+pip install --no-cache-dir 'python-lsp-server[all]'
+
+# markdown ipythongfm gfm
+npm install unified-language-server
+npm install -g unified-language-server
+
+# JSON LSP server
+npm install -g vscode-json-languageserver-bin
+
+# YAML LSP server  
+npm install -g yaml-language-server
+
+# SQL LSP server
+npm install -g sql-language-server
+
+# Bash LSP server
+npm install -g bash-language-server
+
+echo "Building JupyterLab..."
+jupyter lab build --minimize=False
+
+echo "LSP setup complete!"
