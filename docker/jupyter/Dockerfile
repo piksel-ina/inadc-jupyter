@@ -185,7 +185,7 @@ RUN echo 'eval "$(micromamba shell hook --shell bash)"' >> ~/.bashrc && \
 WORKDIR ${HOME}
 
 # Set ENTRYPOINT to use tini for signal handling
-ENTRYPOINT ["tini", "-g", "--"]
+ENTRYPOINT ["tini", "-g", "--", "start-notebook.sh"]
 
 # Set CMD to start Jupyter Lab by default
-CMD ["start-notebook.sh"]
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root", "--no-browser"]
