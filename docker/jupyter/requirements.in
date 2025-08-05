@@ -9,3 +9,5 @@ mdutils
 sunriset
 wofs 
 odc-stats
+dask-labextension
+nbgitpuller
