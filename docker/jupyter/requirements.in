@@ -5,5 +5,7 @@ git+https://github.com/GeoscienceAustralia/dea-intertidal.git
 git+https://github.com/auspatious/coastlines.git
 git+https://github.com/piksel-ina/piksel-notebooks.git
 eo-tides
+mdutils
+sunriset
 wofs 
 odc-stats

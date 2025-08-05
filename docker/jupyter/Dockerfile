@@ -1,7 +1,6 @@
-FROM mambaorg/micromamba:2.3-debian11 AS sandbox-build
+FROM mambaorg/micromamba:1.5.8-bookworm-slim AS sandbox-build
 
-ENV CONDA_ENV=notebook \
-    DEBIAN_FRONTEND=noninteractive \
+ENV DEBIAN_FRONTEND=noninteractive \
     NB_USER=jovyan \
     NB_UID=1000 \
     NB_GID=100 \
@@ -45,9 +44,7 @@ RUN echo "Installing system packages and build dependencies..." && \
         postgresql-client \
         python3-dev \
         libpython3-dev \
-        htop \
         fish \
-        sudo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -65,33 +62,36 @@ RUN echo "Creating ${NB_USER} user..." && \
     echo "${NB_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
     chown -R ${NB_USER}:$GROUP_NAME /srv
 
-# Copy configuration files (from root context perspective)
+# Copy conda-lock.yml into the image
 COPY docker/jupyter/conda-lock.yml .
-COPY docker/jupyter/requirements.in .
 
-# Create environment directly from conda-lock.yml
+# Install Conda environment and clean up
 RUN echo "Installing into base environment from 'conda-lock.yml'..." && \
     micromamba install -y -n base -f conda-lock.yml && \
     micromamba clean --all --yes && \
-    echo "Installing pip dependencies..." && \
-    /opt/conda/bin/pip install --no-cache-dir pip-tools && \
-    /opt/conda/bin/pip-compile requirements.in && \
-    /opt/conda/bin/pip install --no-cache-dir -r requirements.txt && \
-    # Clean up everything in one layer
-    micromamba clean --all --yes && \
-    /opt/conda/bin/pip cache purge && \
     rm -rf /tmp/* /var/tmp/* && \
-    rm -rf /opt/conda/conda-meta/* && \
-    rm -rf /opt/conda/lib/python*/site-packages/*/tests && \
-    rm -rf /opt/conda/lib/python*/site-packages/*/__pycache__ && \
     find /opt/conda -name "*.pyc" -delete && \
     find /opt/conda -name "*.pyo" -delete && \
     find /opt/conda -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 
-# Install other deps
+# Copy requirements.in for pip dependencies
+COPY docker/jupyter/requirements.in .
+
+# Install pip dependencies and clean up in a separate layer
+RUN echo "Installing pip dependencies..." && \
+    /opt/conda/bin/pip install --no-cache-dir pip-tools && \
+    /opt/conda/bin/pip-compile requirements.in && \
+    /opt/conda/bin/pip install --no-cache-dir -r requirements.txt && \
+    /opt/conda/bin/pip cache purge && \
+    rm -rf /opt/conda/lib/python*/site-packages/*/tests && \
+    rm -rf /opt/conda/lib/python*/site-packages/*/__pycache__ && \
+    rm -rf /tmp/* /var/tmp/*
+
+# Force install other packages
 RUN /opt/conda/bin/pip install --no-cache-dir --force-reinstall --no-deps \
     git+https://github.com/auspatious/pyTMD.git@update-with-INATIDES-compatibility \
-    https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl
+    https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl \
+    bottleneck
 
 # Copy and setup postBuild script if it exists (from root context)
 COPY docker/jupyter/postBuild* ./
@@ -111,11 +111,10 @@ RUN echo "Setup 'postBuild' script for JupyterLab configuration..." && \
     fi
 
 # Runtime Stage: Copy built artifacts into a slimmer image
-FROM mambaorg/micromamba:2.3-debian11 AS sandbox-final
+FROM mambaorg/micromamba:1.5.8-bookworm-slim AS sandbox-final
 
 # Re-declare environment variables for runtime stage (updated to /opt/conda paths)
-ENV CONDA_ENV=notebook \
-    DEBIAN_FRONTEND=noninteractive \
+ENV DEBIAN_FRONTEND=noninteractive \
     NB_USER=jovyan \
     NB_UID=1000 \
     NB_GID=100 \
@@ -146,11 +145,11 @@ RUN apt-get update --fix-missing > /dev/null && \
         tzdata \
         curl \
         git \
+        gcc \
+        build-essential \
         libpq-dev \
         postgresql-client \
-        htop \
         fish \
-        sudo \
         tini \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -159,7 +158,7 @@ RUN apt-get update --fix-missing > /dev/null && \
 COPY --from=sandbox-build /etc/passwd /etc/passwd
 COPY --from=sandbox-build /etc/group /etc/group
 COPY --from=sandbox-build /etc/sudoers /etc/sudoers
-COPY --from=sandbox-build /etc/sudoers.d /etc/sudoers.d
+# COPY --from=sandbox-build /etc/sudoers.d /etc/sudoers.d
 
 # Copy the built Conda environment and user home
 COPY --from=sandbox-build --chown=${NB_UID}:${NB_GID} /opt/conda /opt/conda
@@ -188,4 +187,4 @@ WORKDIR ${HOME}
 ENTRYPOINT ["tini", "-g", "--", "start-notebook.sh"]
 
 # Set CMD to start Jupyter Lab by default
-CMD ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root", "--no-browser"]
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--no-browser"]
