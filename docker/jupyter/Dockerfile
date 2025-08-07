@@ -65,50 +65,27 @@ RUN echo "Creating ${NB_USER} user..." && \
 # Copy conda-lock.yml into the image
 COPY docker/jupyter/conda-lock.yml .
 
-# Install Conda environment and clean up
-RUN echo "Installing into base environment from 'conda-lock.yml'..." && \
-    micromamba install -y -n base -f conda-lock.yml && \
-    micromamba clean --all --yes && \
-    rm -rf /tmp/* /var/tmp/* && \
-    find /opt/conda -name "*.pyc" -delete && \
-    find /opt/conda -name "*.pyo" -delete && \
-    find /opt/conda -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
-
 # Copy requirements.in for pip dependencies
 COPY docker/jupyter/requirements.in .
 
-# Install pip dependencies and clean up in a separate layer
-RUN echo "Installing pip dependencies..." && \
-    /opt/conda/bin/pip install --no-cache-dir pip-tools && \
-    /opt/conda/bin/pip-compile requirements.in && \
-    /opt/conda/bin/pip install --no-cache-dir -r requirements.txt && \
+
+RUN echo "Installing into base environment" && \
+    micromamba install -y -n base -f conda-lock.yml && \
+    eval "$(micromamba shell hook --shell bash)" && \
+    micromamba activate base && \
+    pip install --no-cache-dir pip-tools && \
+    pip-compile requirements.in && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir --force-reinstall --no-deps \
+        git+https://github.com/auspatious/pyTMD.git@update-with-INATIDES-compatibility \
+        https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl \
+    micromamba clean --all -y && \
+    rm -rf /tmp/* /var/tmp/* && \
+    find /opt/conda -name "*.pyc" -delete && \
+    find /opt/conda -name "*.pyo" -delete && \
     /opt/conda/bin/pip cache purge && \
-    rm -rf /opt/conda/lib/python*/site-packages/*/tests && \
     rm -rf /opt/conda/lib/python*/site-packages/*/__pycache__ && \
-    rm -rf /tmp/* /var/tmp/*
-
-# Force install other packages
-RUN /opt/conda/bin/pip install --no-cache-dir --force-reinstall --no-deps \
-    git+https://github.com/auspatious/pyTMD.git@update-with-INATIDES-compatibility \
-    https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl \
-    bottleneck
-
-# Copy and setup postBuild script if it exists (from root context)
-COPY docker/jupyter/postBuild* ./
-RUN echo "Setup 'postBuild' script for JupyterLab configuration..." && \
-    if [ -f "postBuild" ]; then \
-        echo "Found postBuild script, executing..." && \
-        chmod +x postBuild && \
-        ./postBuild && \
-        echo "Cleaning up after postBuild..." && \
-        rm -rf /tmp/* && \
-        rm -rf ${HOME}/.cache ${HOME}/.npm ${HOME}/.yarn && \
-        rm -rf ${NB_PYTHON_PREFIX}/share/jupyter/lab/staging && \
-        find ${CONDA_DIR} -follow -type f -name '*.a' -delete 2>/dev/null || true && \
-        find ${CONDA_DIR} -follow -type f -name '*.js.map' -delete 2>/dev/null || true; \
-    else \
-        echo "No postBuild script found, skipping..."; \
-    fi
+    find /opt/conda -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true 
 
 # Runtime Stage: Copy built artifacts into a slimmer image
 FROM mambaorg/micromamba:1.5.8-bookworm-slim AS sandbox-final
@@ -139,18 +116,22 @@ USER root
 # Install only runtime system packages (no build tools)
 RUN apt-get update --fix-missing > /dev/null && \
     apt-get install -y \
-        apt-utils \
         wget \
         zip \
         tzdata \
         curl \
         git \
-        gcc \
-        build-essential \
-        libpq-dev \
-        postgresql-client \
-        fish \
         tini \
+        curl \
+        gh \
+        ca-certificates \
+        postgresql-client \
+        nano \
+        vim-tiny \
+        openssh-client \
+        procps \
+        htop \
+        sudo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -164,10 +145,13 @@ COPY --from=sandbox-build /etc/sudoers /etc/sudoers
 COPY --from=sandbox-build --chown=${NB_UID}:${NB_GID} /opt/conda /opt/conda
 COPY --from=sandbox-build --chown=${NB_UID}:${NB_GID} /home/${NB_USER} /home/${NB_USER}
 COPY --from=sandbox-build --chown=${NB_UID}:${NB_GID} /srv /srv
+# Copy configuration files
+COPY --chown=${NB_UID}:${NB_GID} docker/jupyter/jupyter_lab_config.py /etc/jupyter/
+COPY --chown=${NB_UID}:${NB_GID} docker/jupyter/jupyter_notebook_config.py /etc/jupyter/
 
-# Copy startup script (create this in your build context, e.g., docker/jupyter/start-notebook.sh)
-COPY docker/jupyter/start-notebook.sh /usr/local/bin/start-notebook.sh
-RUN chmod +x /usr/local/bin/start-notebook.sh
+# Copy startup script (create this in your build context, e.g., docker/jupyter/start.sh)
+COPY docker/jupyter/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
 
 # Switch to non-root user
 USER ${NB_UID}
@@ -184,7 +168,7 @@ RUN echo 'eval "$(micromamba shell hook --shell bash)"' >> ~/.bashrc && \
 WORKDIR ${HOME}
 
 # Set ENTRYPOINT to use tini for signal handling
-ENTRYPOINT ["tini", "-g", "--", "start-notebook.sh"]
+ENTRYPOINT ["tini", "-g", "--", "start.sh"]
 
 # Set CMD to start Jupyter Lab by default
 CMD ["jupyter", "lab", "--ip=0.0.0.0", "--no-browser"]

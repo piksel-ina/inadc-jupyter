@@ -1,34 +1,23 @@
 name: sandbox-base
 channels:
   - conda-forge
-  - defaults
-channel_priority: strict
-
+  - nodefaults
 dependencies:
   # ========================================
-  # CORE
+  # CORE PYTHON & DEVELOPMENT
   # ========================================
   - python==3.12
   - pip
-  - cython
   - setuptools
   - wheel
   - numba
-
-  # ========================================
-  # ESSENTIAL DEVELOPMENT TOOLS
-  # ========================================
   - git
   - wget
   - curl
   - unzip
-  - htop
-  - tmux
-  - vim
   - ipython
   - gh
   - openssh
-  - git-lfs
 
   # ========================================
   # DATABASE CONNECTIVITY
@@ -67,10 +56,9 @@ dependencies:
   - netcdf4
   - h5netcdf
   - numcodecs
-  - numbagg
 
   # ========================================
-  # ESSENTIAL GEOSPATIAL
+  # CORE GEOSPATIAL STACK
   # ========================================
   - gdal
   - rasterio
@@ -84,7 +72,6 @@ dependencies:
   - rtree
   - proj
   - pyyaml
-  - cartopy
   - folium
   - rio-cogeo
   - rioxarray
@@ -93,73 +80,37 @@ dependencies:
   - earthaccess<0.13.0
   - planetary-computer
   - morecantile
-  - lonboard
-  - geoviews-core
-  - spyndex
   - geopy
-  - owslib
-
-  # ========================================
-  # EARTH OBSERVATION & CLIMATE
-  # ========================================
-  - satpy
-  - pyresample
-  - pyorbital
-  - pyhdf
-  - cfgrib
-  - cf_xarray
-  - cdsapi
-  - cmocean
-  - metpy
-  - xclim
-  - xesmf
-  - esmpy
-  - gsw
-  - fastjmd95
-  - eofs
-  - gcm_filters
-  - pop-tools
-  - xgcm
-  - xmitgcm
 
   # ========================================
   # JUPYTER ESSENTIALS
   # ========================================
   - jupyterlab>=4.0
-  - jupyterhub
-  - jupyterhub-base
-  - jupyterhub-singleuser
   - ipywidgets
   - ipyleaflet
   - ipykernel
   - ipympl
-  - ipytree
   - nbconvert
   - jupyter-resource-usage
   - jupyterlab-git
-  - jupyter-server-proxy
-  - jupyterlab_code_formatter
-  - jupyterlab-myst
-  - jupyterlab-lsp
-  - jupyter-panel-proxy
-  - jupyter-sshd-proxy
   - nb_conda_kernels
-  - nbstripout
   - nodejs
+  - jupyterhub
+  - jupyterhub-base
+  - jupyterhub-singleuser
+  - jupyter-server-proxy
+  - jupyter-sshd-proxy
+  - jupyterlab-myst
 
   # ========================================
   # CLOUD & DATA ACCESS
   # ========================================
   - boto3
   - s3fs
-  - gcsfs
-  - adlfs
   - requests
-  - aiohttp
   - pystac
   - pystac-client
   - awscli
-  - obstore
 
   # ========================================
   # DATA INTAKE & PROCESSING
@@ -179,67 +130,26 @@ dependencies:
   - pycamhd
 
   # ========================================
-  # CODE QUALITY & DEVELOPMENT
+  # CODE QUALITY
   # ========================================
   - black
   - ruff
   - isort
-  - python-lsp-ruff
-  - gh-scoped-creds
 
   # ========================================
-  # ADVANCED VISUALIZATION
+  # VISUALIZATION
   # ========================================
   - holoviews
   - hvplot
   - panel
-  - datashader
   - bokeh
-  - param
-  - xarray_leaflet
-  - xarray-spatial
 
   # ========================================
-  # PERFORMANCE & PROFILING
-  # ========================================
-  - line_profiler
-  - memory_profiler
-  - snakeviz
-  - watermark
-  - ipdb
-
-  # ========================================
-  # ADDITIONAL SCIENTIFIC TOOLS
-  # ========================================
-  - sparse
-  - pot
-  - xgboost
-  - numpy_groupies
-  - xarrayutils
-  - xhistogram
-  - xmip
-  - xpublish
-  - xrft
-  - xskillscore
-  - xvec
-  - nc-time-axis
-  - ciso
-
-  # ========================================
-  # SYSTEM & UTILITIES
+  # UTILITIES
   # ========================================
   - lxml
-  - lz4
-  - python-blosc
-  - python-xxhash
-  - xxhash
   - python-duckdb
-  - duckdb-cli
-  - tiledb-py
   - timezonefinder
-  - python-gist
-  - python-graphviz
-  - descartes
 
   # ========================================
   # PIP-ONLY DEPENDENCIES
@@ -257,3 +167,8 @@ dependencies:
       - odc-ui
       - dea-tools
       - odc-dscache
+      - dask-labextension
+      - nbstripout
+      - nbgitpuller
+      - mdutils
+      - sunriset
