@@ -145,9 +145,11 @@ COPY --from=sandbox-build /etc/sudoers /etc/sudoers
 COPY --from=sandbox-build --chown=${NB_UID}:${NB_GID} /opt/conda /opt/conda
 COPY --from=sandbox-build --chown=${NB_UID}:${NB_GID} /home/${NB_USER} /home/${NB_USER}
 COPY --from=sandbox-build --chown=${NB_UID}:${NB_GID} /srv /srv
-# Copy configuration files
+
+# Set Jupyter configuration
 COPY --chown=${NB_UID}:${NB_GID} docker/jupyter/jupyter_lab_config.py /etc/jupyter/
-COPY --chown=${NB_UID}:${NB_GID} docker/jupyter/jupyter_notebook_config.py /etc/jupyter/
+COPY --chown=${NB_UID}:${NB_GID} docker/jupyter/jupyter_server_config.py /etc/jupyter/
+ENV JUPYTER_CONFIG_PATH=/etc/jupyter:$JUPYTER_CONFIG_PATH
 
 # Copy startup script (create this in your build context, e.g., docker/jupyter/start.sh)
 COPY docker/jupyter/start.sh /usr/local/bin/start.sh
