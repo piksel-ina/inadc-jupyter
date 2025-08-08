@@ -11,13 +11,8 @@ c.ServerApp.root_dir = "/home/jovyan"
 
 # ---- basic network settings --------------------
 c.ServerApp.ip = '0.0.0.0'
-c.ServerApp.port = 8888
 c.ServerApp.allow_root = True
 c.ServerApp.open_browser = False
-
-# ---- authentication basics ---------------------
-c.ServerApp.token = ''
-c.ServerApp.password = ''
 
 # ---- content management -------------------------
 c.ServerApp.kernel_spec_manager_class = 'jupyter_client.kernelspec.KernelSpecManager'
