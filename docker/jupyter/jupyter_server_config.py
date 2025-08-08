@@ -1,17 +1,35 @@
 import os
 c = get_config()                       # noqa: F821
 
-# ---- terminal ---------------------------------------------------
+# ---- terminal -----------------------------------
 c.ServerApp.terminado_settings = {
     "shell_command": [os.environ.get("SHELL", "/bin/bash")]
 }
 
-# ---- behaviour --------------------------------------------------
-c.ServerApp.shutdown_no_activity_timeout = 3600
-c.ServerApp.root_dir                     = "/home/jovyan"
-c.NotebookApp.show_banner                = False
+# ---- basic behavior -----------------------------
+c.ServerApp.root_dir = "/home/jovyan"
 
-# ---- kernels ----------------------------------------------------
-# Keep nb_conda_kernels but restrict the scan:
-from nb_conda_kernels.manager import CondaKernelSpecManager
-c.CondaKernelSpecManager.env_filter = rf".*envs/{os.environ.get('CONDA_DEFAULT_ENV','base')}.*"
+# ---- basic network settings --------------------
+c.ServerApp.ip = '0.0.0.0'
+c.ServerApp.port = 8888
+c.ServerApp.allow_root = True
+c.ServerApp.open_browser = False
+
+# ---- authentication basics ---------------------
+c.ServerApp.token = ''
+c.ServerApp.password = ''
+
+# ---- content management -------------------------
+c.ServerApp.kernel_spec_manager_class = 'jupyter_client.kernelspec.KernelSpecManager'
+c.ServerApp.kernel_manager_class = 'jupyter_server.services.kernels.kernelmanager.MappingKernelManager'
+
+# ---- performance settings ----------------------
+c.ServerApp.iopub_data_rate_limit = 1000000000
+c.ServerApp.iopub_msg_rate_limit = 3000
+
+# ---- logging ------------------------------------
+c.Application.log_level = 'INFO'
+
+# ---- ssl (always disabled in container) --------
+c.ServerApp.certfile = ''
+c.ServerApp.keyfile = ''

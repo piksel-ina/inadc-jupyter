@@ -68,24 +68,32 @@ COPY docker/jupyter/conda-lock.yml .
 # Copy requirements.in for pip dependencies
 COPY docker/jupyter/requirements.in .
 
-
+# Install micromamba packages and activate base env
 RUN echo "Installing into base environment" && \
     micromamba install -y -n base -f conda-lock.yml && \
     eval "$(micromamba shell hook --shell bash)" && \
-    micromamba activate base && \
-    pip install --no-cache-dir pip-tools && \
-    pip-compile requirements.in && \
-    pip install --no-cache-dir -r requirements.txt && \
+    micromamba activate base
+
+# Compile and install from requirements.txt
+RUN micromamba run -n base pip install --no-cache-dir pip-tools && \
+    micromamba run -n base pip-compile requirements.in && \
+    micromamba run -n base pip install --no-cache-dir -r requirements.txt
+
+# Custom force-reinstalls 
+RUN micromamba run -n base bash -c ' \
     pip install --no-cache-dir --force-reinstall --no-deps \
         git+https://github.com/auspatious/pyTMD.git@update-with-INATIDES-compatibility \
-        https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl \
-    micromamba clean --all -y && \
+        https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl'
+
+
+# Cleanup (keep this last to minimize image size)
+RUN micromamba clean --all -y && \
     rm -rf /tmp/* /var/tmp/* && \
     find /opt/conda -name "*.pyc" -delete && \
     find /opt/conda -name "*.pyo" -delete && \
     /opt/conda/bin/pip cache purge && \
     rm -rf /opt/conda/lib/python*/site-packages/*/__pycache__ && \
-    find /opt/conda -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true 
+    find /opt/conda -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 
 # Runtime Stage: Copy built artifacts into a slimmer image
 FROM mambaorg/micromamba:1.5.8-bookworm-slim AS sandbox-final
@@ -149,7 +157,7 @@ COPY --from=sandbox-build --chown=${NB_UID}:${NB_GID} /srv /srv
 # Set Jupyter configuration
 COPY --chown=${NB_UID}:${NB_GID} docker/jupyter/jupyter_lab_config.py /etc/jupyter/
 COPY --chown=${NB_UID}:${NB_GID} docker/jupyter/jupyter_server_config.py /etc/jupyter/
-ENV JUPYTER_CONFIG_PATH=/etc/jupyter:$JUPYTER_CONFIG_PATH
+ENV JUPYTER_CONFIG_PATH=/etc/jupyter:/home/jovyan/.jupyter:$JUPYTER_CONFIG_PATH
 
 # Copy startup script (create this in your build context, e.g., docker/jupyter/start.sh)
 COPY docker/jupyter/start.sh /usr/local/bin/start.sh

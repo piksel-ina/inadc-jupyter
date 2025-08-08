@@ -13,4 +13,8 @@ echo "Activating micromamba environment..."
 eval "$(micromamba shell hook --shell bash)"
 micromamba activate base
 
+if ! jupyter kernelspec list | grep -q "base"; then
+    python -m ipykernel install --user --name base --display-name "Python (base)"
+fi
+
 exec "$@"

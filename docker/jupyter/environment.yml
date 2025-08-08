@@ -93,7 +93,6 @@ dependencies:
   - nbconvert
   - jupyter-resource-usage
   - jupyterlab-git
-  - nb_conda_kernels
   - nodejs
   - jupyterhub
   - jupyterhub-base
