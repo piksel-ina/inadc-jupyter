@@ -1,6 +1,6 @@
 ######
 
-![Piksel-sandbox-header-image](https://github.com/piksel-ina/piksel-document/blob/main/assets/logo/piksel-header-2.png?raw=true)
+![Piksel-sandbox-header-image](https://github.com/piksel-ina/piksel-documentation/blob/main/assets/logo/piksel-header-large.png?raw=true)
 
 
 ```{tip} Apa itu Piksel Sandbox?
