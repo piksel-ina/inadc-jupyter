@@ -1,7 +1,6 @@
 ######
 
-![Piksel-sandbox-header-image](https://github.com/piksel-ina/piksel-documentation/blob/main/assets/logo/piksel-header-large.png?raw=true)
-
+![Piksel-sandbox-header-image](assets/piksel_header.png)
 
 ```{tip} Apa itu Piksel Sandbox?
 :class: dropdown
@@ -25,11 +24,9 @@ Lingkungan cloud interaktif yang dirancang khusus untuk wilayah Indonesia, memun
 :::{grid-item}
 :columns: 6
 
-
 ## Overview
 
 **Piksel Sandbox Indonesia** provides easy access to satellite data for the Indonesian region. This platform offers an ideal learning environment for researchers, students, and geospatial professionals in Indonesia.
-
 
 :::
 
@@ -37,6 +34,7 @@ Lingkungan cloud interaktif yang dirancang khusus untuk wilayah Indonesia, memun
 :columns: 7
 
 ### Fokus Regional:
+
 - Data satelit khusus wilayah Indonesia
 - Studi kasus lokal
 - Tutorial dalam Bahasa Indonesia dan Inggris
@@ -50,6 +48,7 @@ Lingkungan cloud interaktif yang dirancang khusus untuk wilayah Indonesia, memun
 :columns: 7
 
 ### Regional Focus:
+
 - Satellite data specific to Indonesian territory
 - Local case studies (deforestation, agriculture, coastal)
 - Tutorials in Indonesian and English language
@@ -134,7 +133,7 @@ Dukungan dalam Bahasa Indonesia dan kolaborasi regional
 
 ::::
 
-##  Saran Penggunaan
+## Saran Penggunaan
 
 ::::{grid} 1 1 2 2
 :gutter: 4
@@ -179,10 +178,9 @@ The Sandbox is designed for learning and prototyping. Not suitable for productio
 
 ::::
 
-
 ## Ketersediaan Data
 
-*Temukan dan pratinjau semua dataset Earth Observation untuk wilayah Indonesia sebelum memulai analisis.*
+_Temukan dan pratinjau semua dataset Earth Observation untuk wilayah Indonesia sebelum memulai analisis._
 
 ::::{grid} 1 1 2 2
 :gutter: 4
@@ -192,7 +190,7 @@ The Sandbox is designed for learning and prototyping. Not suitable for productio
 
 ### 📊 Dataset Tersedia:
 
-```{list-table} 
+```{list-table}
 :header-rows: 1
 :widths: 30 25 45
 
@@ -219,10 +217,9 @@ The Sandbox is designed for learning and prototyping. Not suitable for productio
 :::{grid-item}
 :columns: 6
 
-
 ### 📊 Available Datasets:
 
-```{list-table} 
+```{list-table}
 :header-rows: 1
 :widths: 30 25 45
 
@@ -247,7 +244,6 @@ The Sandbox is designed for learning and prototyping. Not suitable for productio
 :::
 
 ::::
-
 
 ```{note}
 **Pendekatan Pengembangan**
