@@ -8,7 +8,8 @@ c.LabApp.default_url  = "/lab"
 
 # ---- UI tweaks --------------------------------------------------
 c.LabApp.collaborative = False
-# c.LabApp.theme = "JupyterLab Dark"
+c.ContentsManager.allow_hidden = True
+c.ContentsManager.hide_globs = []
 
 # ---- News / update banner --------------------------------------
 c.LabApp.news_url                = None

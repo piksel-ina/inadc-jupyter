@@ -20,6 +20,8 @@ c.ServerApp.open_browser = False
 # ---- content management -------------------------
 c.ServerApp.kernel_spec_manager_class = 'jupyter_client.kernelspec.KernelSpecManager'
 c.ServerApp.kernel_manager_class = 'jupyter_server.services.kernels.kernelmanager.MappingKernelManager'
+c.ContentsManager.allow_hidden = True
+c.ContentsManager.hide_globs = []
 
 # ---- performance settings ----------------------
 c.ServerApp.iopub_data_rate_limit = 1000000000

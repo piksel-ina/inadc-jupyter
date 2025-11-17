@@ -52,7 +52,8 @@ RUN EXISTING_USER=$(getent passwd 1000 | cut -d: -f1) && \
     usermod -l jovyan -d /home/jovyan -m $EXISTING_USER && \
     groupmod -n jovyan $EXISTING_GROUP && \
     echo "jovyan ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
-    mkdir -p /home/jovyan/.config /home/jovyan/.jupyter /home/jovyan/workspace
+    mkdir -p /home/jovyan/.config /home/jovyan/.jupyter && \ 
+    chown -R jovyan:jovyan /home/jovyan
 
 # ---------- Stage 4: Python Environment --------------------------------------
 FROM user-setup AS python-env
@@ -88,7 +89,11 @@ COPY --chown=jovyan:jovyan docker/jupyter-dev/jupyter_lab_config.py /home/jovyan
 USER root
 COPY docker/jupyter-dev/jupyter_server_config.py /etc/jupyter/jupyter_server_config.py
 COPY docker/jupyter-dev/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh && \
+    mkdir -p /home/jovyan/.jupyter/lab/user-settings && \
+    chown -R jovyan:jovyan /home/jovyan/.jupyter
+
+RUN git config --system --add safe.directory '*'
 
 USER jovyan
 WORKDIR /home/jovyan

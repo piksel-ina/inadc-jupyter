@@ -1,10 +1,11 @@
 #!/bin/bash
 set -e
 
-# Create JupyterLab settings directory
-mkdir -p /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/terminal-extension
+mkdir -p /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/terminal-extension 2>/dev/null || true
+mkdir -p /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/filebrowser-extension 2>/dev/null || true
+mkdir -p /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/apputils-extension 2>/dev/null || true
+mkdir -p /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/docmanager-extension 2>/dev/null || true
 
-# Configure terminal to use Nerd Font
 cat > /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/terminal-extension/plugin.jupyterlab-settings << 'EOF'
 {
     "fontFamily": "Hack Nerd Font, Hack Nerd Font Mono, monospace",
@@ -18,9 +19,28 @@ cat > /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/terminal-extension/plu
 }
 EOF
 
+cat > /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/filebrowser-extension/browser.jupyterlab-settings << 'EOF'
+{
+    "showHiddenFiles": true
+}
+EOF
+
+cat > /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/notification.jupyterlab-settings << 'EOF'
+{
+    "fetchNews": "false"
+}
+EOF
+
+cat > /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/docmanager-extension/plugin.jupyterlab-settings << 'EOF'
+{
+    "defaultViewers": {
+        "markdown": "Markdown Preview"
+    }
+}
+EOF
+
 echo "Python: $(python3 --version)"
 echo "UV: $(uv --version)"
 echo "JupyterLab: $(jupyter-lab --version)"
 
-# Execute the main command
 exec "$@"
