@@ -1,13 +1,9 @@
-FROM ghcr.io/osgeo/gdal:ubuntu-small-3.12.0 AS jupyter-dev-base
-
-ARG DATACUBE_VERSION=1.9.10
+# ---------- Stage 1: Base System Setup --------------------------------------
+FROM ghcr.io/osgeo/gdal:ubuntu-small-3.12.0 AS system-base
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=UTC \
-    PYTHONUNBUFFERED=1 \
-    JUPYTER_ENABLE_LAB=yes
+    TZ=UTC
 
-# Install additional system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     wget \
@@ -26,29 +22,31 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     tree \
     htop \
-    nodejs \
-    npm \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Verify GDAL installation
-RUN echo "GDAL Version: $(gdal-config --version)" && \
-    python3 -c "from osgeo import gdal; print(f'Python GDAL: {gdal.__version__}')"
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    node --version && npm --version
 
-# Install Nerd Font for better terminal experience
+# ---------- Stage 2: Font and CLI Tools --------------------------------------
+FROM system-base AS tools-setup
+
 RUN mkdir -p /usr/share/fonts/truetype/hack-nerd-font && \
     wget -q -O /tmp/Hack.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/Hack.zip && \
     unzip -q /tmp/Hack.zip -d /usr/share/fonts/truetype/hack-nerd-font && \
     rm /tmp/Hack.zip && \
     fc-cache -fv
 
-# Install starship prompt
 RUN curl -sS https://starship.rs/install.sh | sh -s -- -y
 
-# Install uv package manager
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Create jovyan user with sudo privileges
+# ---------- Stage 3: User Setup --------------------------------------
+FROM tools-setup AS user-setup
+
 RUN EXISTING_USER=$(getent passwd 1000 | cut -d: -f1) && \
     EXISTING_GROUP=$(getent group 1000 | cut -d: -f1) && \
     usermod -l jovyan -d /home/jovyan -m $EXISTING_USER && \
@@ -56,33 +54,44 @@ RUN EXISTING_USER=$(getent passwd 1000 | cut -d: -f1) && \
     echo "jovyan ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
     mkdir -p /home/jovyan/.config /home/jovyan/.jupyter /home/jovyan/workspace
 
-# Copy configuration files
-COPY docker/jupyter-dev/bashrc /home/jovyan/.bashrc
-COPY docker/jupyter-dev/starship.toml /home/jovyan/.config/starship.toml
-COPY docker/jupyter-dev/jupyter_lab_config.py /home/jovyan/.jupyter/jupyter_lab_config.py
-COPY docker/jupyter-dev/jupyter_server_config.py /etc/jupyter/jupyter_server_config.py
-COPY docker/jupyter-dev/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY docker/jupyter-dev/requirements.txt /home/jovyan/requirements.txt
+# ---------- Stage 4: Python Environment --------------------------------------
+FROM user-setup AS python-env
 
-# Fix permissions
-RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    chown -R jovyan:jovyan /home/jovyan
+ARG DATACUBE_VERSION=1.9.10
 
-# Switch to non-root user
+COPY docker/jupyter-dev/requirements.txt /tmp/requirements.txt
+
 USER jovyan
 WORKDIR /home/jovyan
 
-
-# Create virtual environment and install Python packages
 RUN uv venv /home/jovyan/.venv && \
     . /home/jovyan/.venv/bin/activate && \
     uv pip install "datacube==${DATACUBE_VERSION}" && \
-    uv pip install -r /home/jovyan/requirements.txt
+    uv pip install -r /tmp/requirements.txt && \
+    jupyter lab build --dev-build=False --minimize=False
 
-# Update PATH to include virtual environment
-ENV PATH="/home/jovyan/.local/bin:/home/jovyan/.venv/bin:$PATH"
+# ---------- Stage 5: Final Image --------------------------------------
+FROM user-setup AS jupyter-dev
 
-WORKDIR /home/jovyan/workspace
+ARG DATACUBE_VERSION=1.9.10
+
+ENV PYTHONUNBUFFERED=1 \
+    JUPYTER_ENABLE_LAB=yes \
+    PATH="/home/jovyan/.local/bin:/home/jovyan/.venv/bin:$PATH"
+
+COPY --from=python-env /home/jovyan/.venv /home/jovyan/.venv
+
+COPY --chown=jovyan:jovyan docker/jupyter-dev/bashrc /home/jovyan/.bashrc
+COPY --chown=jovyan:jovyan docker/jupyter-dev/starship.toml /home/jovyan/.config/starship.toml
+COPY --chown=jovyan:jovyan docker/jupyter-dev/jupyter_lab_config.py /home/jovyan/.jupyter/jupyter_lab_config.py
+
+USER root
+COPY docker/jupyter-dev/jupyter_server_config.py /etc/jupyter/jupyter_server_config.py
+COPY docker/jupyter-dev/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+USER jovyan
+WORKDIR /home/jovyan
 
 EXPOSE 8888
 
