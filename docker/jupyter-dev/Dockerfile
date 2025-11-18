@@ -78,7 +78,8 @@ ARG DATACUBE_VERSION=1.9.10
 
 ENV PYTHONUNBUFFERED=1 \
     JUPYTER_ENABLE_LAB=yes \
-    PATH="/home/jovyan/.local/bin:/home/jovyan/.venv/bin:$PATH"
+    VIRTUAL_ENV="/home/jovyan/.venv" \
+    PATH="/home/jovyan/.local/bin:/home/jovyan/.venv/bin:$PATH" 
 
 COPY --from=python-env /home/jovyan/.venv /home/jovyan/.venv
 

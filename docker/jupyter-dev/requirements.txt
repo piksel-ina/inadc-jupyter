@@ -25,6 +25,7 @@ nbconvert
 jupyter-resource-usage
 jupyterlab-git
 jupyterlab-myst
+notebook
 
 # JupyterHub
 jupyterhub>=5.0
