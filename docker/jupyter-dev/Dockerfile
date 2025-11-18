@@ -55,46 +55,46 @@ RUN EXISTING_USER=$(getent passwd 1000 | cut -d: -f1) && \
     mkdir -p /home/jovyan/.config /home/jovyan/.jupyter && \ 
     chown -R jovyan:jovyan /home/jovyan
 
-# ---------- Stage 4: Python Environment --------------------------------------
-FROM user-setup AS python-env
-
-ARG DATACUBE_VERSION=1.9.10
-
-COPY docker/jupyter-dev/requirements.txt /tmp/requirements.txt
-
-USER jovyan
-WORKDIR /home/jovyan
-
-RUN uv venv /home/jovyan/.venv && \
-    . /home/jovyan/.venv/bin/activate && \
-    uv pip install "datacube==${DATACUBE_VERSION}" && \
-    uv pip install -r /tmp/requirements.txt && \
-    jupyter lab build --dev-build=False --minimize=False
-
-# ---------- Stage 5: Final Image --------------------------------------
-FROM user-setup AS jupyter-dev
-
-ARG DATACUBE_VERSION=1.9.10
+# ---------- Stage 4: Final Image --------------------------------------
+FROM user-setup AS final-image
 
 ENV PYTHONUNBUFFERED=1 \
-    JUPYTER_ENABLE_LAB=yes \
-    VIRTUAL_ENV="/home/jovyan/.venv" \
-    PATH="/home/jovyan/.local/bin:/home/jovyan/.venv/bin:$PATH" 
+    JUPYTER_ENABLE_LAB=yes
 
-COPY --from=python-env /home/jovyan/.venv /home/jovyan/.venv
+RUN uv pip install --system --break-system-packages \
+    jupyterhub>=5.0 \
+    jupyterlab>=4.0 \
+    notebook \
+    ipykernel \
+    jupyter-server-proxy \
+    jupyter-sshd-proxy \
+    ipywidgets>=8.0 \
+    jupyter-resource-usage \
+    jupyterlab-git \
+    nbconvert \
+    jupyterlab-myst \
+    ipyleaflet \
+    requests \
+    pyyaml \
+    && jupyter lab build --dev-build=False --minimize=False \
+    && rm -rf /home/jovyan/.cache /tmp/*
 
-COPY --chown=jovyan:jovyan docker/jupyter-dev/bashrc /home/jovyan/.bashrc
-COPY --chown=jovyan:jovyan docker/jupyter-dev/starship.toml /home/jovyan/.config/starship.toml
-COPY --chown=jovyan:jovyan docker/jupyter-dev/jupyter_lab_config.py /home/jovyan/.jupyter/jupyter_lab_config.py
-
-USER root
+RUN mkdir -p /usr/local/share/jupyter/lab/settings /etc/jupyter
+COPY docker/jupyter-dev/overrides.json /usr/local/share/jupyter/lab/settings/overrides.json
 COPY docker/jupyter-dev/jupyter_server_config.py /etc/jupyter/jupyter_server_config.py
+COPY docker/jupyter-dev/jupyter_lab_config.py /etc/jupyter/jupyter_lab_config.py
+
+RUN mkdir -p /etc/skel/.config
+COPY docker/jupyter-dev/bashrc /etc/skel/.bashrc
+COPY docker/jupyter-dev/starship.toml /etc/skel/.config/starship.toml
+
 COPY docker/jupyter-dev/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    mkdir -p /home/jovyan/.jupyter/lab/user-settings && \
-    chown -R jovyan:jovyan /home/jovyan/.jupyter
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 RUN git config --system --add safe.directory '*'
+
+LABEL maintainer="taufik.shf@gmail.com" \
+      description="JupyterLab development environment with sudo, UV, GDAL, Git and more development tools."
 
 USER jovyan
 WORKDIR /home/jovyan
@@ -103,3 +103,4 @@ EXPOSE 8888
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["jupyter-lab", "--ip=0.0.0.0", "--no-browser"]
+
