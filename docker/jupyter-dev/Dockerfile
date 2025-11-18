@@ -87,6 +87,8 @@ COPY docker/jupyter-dev/jupyter_lab_config.py /etc/jupyter/jupyter_lab_config.py
 RUN mkdir -p /etc/skel/.config
 COPY docker/jupyter-dev/bashrc /etc/skel/.bashrc
 COPY docker/jupyter-dev/starship.toml /etc/skel/.config/starship.toml
+COPY --chown=jovyan:users docker/jupyter-dev/bashrc /home/jovyan/.bashrc
+COPY --chown=jovyan:users docker/jupyter-dev/starship.toml /home/jovyan/.config/starship.toml
 
 COPY docker/jupyter-dev/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
