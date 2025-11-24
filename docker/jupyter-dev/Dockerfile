@@ -22,6 +22,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     tree \
     htop \
+    libpq-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    libsqlite3-dev \
+    make \
+    gcc \
+    g++ \
+    libspatialindex-dev  \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -73,9 +81,13 @@ RUN uv pip install --system --break-system-packages \
     jupyterlab-git \
     nbconvert \
     jupyterlab-myst \
-    ipyleaflet \
     requests \
     pyyaml \
+    jupyterlab_code_formatter \  
+    jupyterlab-execute-time  \
+    black \
+    isort \
+    autopep8 \
     && jupyter lab build --dev-build=False --minimize=False \
     && rm -rf /home/jovyan/.cache /tmp/*
 

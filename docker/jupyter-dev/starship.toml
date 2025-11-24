@@ -38,7 +38,10 @@ format = '[[($all_status$ahead_behind )](fg:#769ff0 bg:#394260)]($style)'
 [python]
 symbol = "py "
 style = "bg:#212736"
-format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+format = '[[ $symbol ($version) (\($virtualenv\)) ](fg:#769ff0 bg:#212736)]($style)'
+detect_extensions = ['py']
+detect_files = ['.python-version', 'Pipfile', '__pycache__', 'pyproject.toml', 'requirements.txt', 'setup.py', 'tox.ini']
+detect_folders = []
 
 [nodejs]
 symbol = "node "
