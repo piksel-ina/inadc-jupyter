@@ -21,6 +21,15 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# Fix LD_PRELOAD issues
+unset LD_PRELOAD
+
+# GPG TTY configuration
+export GPG_TTY=$(tty)
+
+# Dask configuration
+export DASK_DISTRIBUTED__DASHBOARD__LINK="/proxy/{port}/status"
+
 # Basic aliases
 alias ll='ls -lah'
 alias la='ls -A'
@@ -55,6 +64,5 @@ eval "$(starship init bash)"
 
 # Welcome message
 echo "🚀   Development Environment Ready!"
-echo "👤   User: $(whoami)"
 echo "🐍   Python: $(python3 --version 2>&1)"
 echo "⚡   UV: $(uv --version 2>&1)"

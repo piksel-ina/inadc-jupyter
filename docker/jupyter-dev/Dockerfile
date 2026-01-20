@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2-dev \
     libxslt1-dev \
     libsqlite3-dev \
+    postgresql-client \
     make \
     gcc \
     g++ \
@@ -88,6 +89,9 @@ RUN uv pip install --system --break-system-packages \
     black \
     isort \
     autopep8 \
+    dask[complete] \
+    dask-labextension \
+    bokeh \
     && jupyter lab build --dev-build=False --minimize=False \
     && rm -rf /home/jovyan/.cache /tmp/*
 
@@ -99,8 +103,8 @@ COPY docker/jupyter-dev/jupyter_lab_config.py /etc/jupyter/jupyter_lab_config.py
 RUN mkdir -p /etc/skel/.config
 COPY docker/jupyter-dev/bashrc /etc/skel/.bashrc
 COPY docker/jupyter-dev/starship.toml /etc/skel/.config/starship.toml
-COPY --chown=jovyan:users docker/jupyter-dev/bashrc /home/jovyan/.bashrc
-COPY --chown=jovyan:users docker/jupyter-dev/starship.toml /home/jovyan/.config/starship.toml
+COPY --chown=jovyan:jovyan docker/jupyter-dev/bashrc /home/jovyan/.bashrc
+COPY --chown=jovyan:jovyan docker/jupyter-dev/starship.toml /home/jovyan/.config/starship.toml
 
 COPY docker/jupyter-dev/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
@@ -113,7 +117,7 @@ LABEL maintainer="taufik.shf@gmail.com" \
 USER jovyan
 WORKDIR /home/jovyan
 
-EXPOSE 8888
+EXPOSE 8888 8787
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["jupyter-lab", "--ip=0.0.0.0", "--no-browser"]
