@@ -3,7 +3,7 @@ name = "inadc-jupyter"
 dynamic = ["version"]
 description = "INADC Jupyter environment and tutorial notebooks for the BIG Piksel platform"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.13"
 license = { file = "LICENSE" }
 dependencies = []
 authors = [
@@ -54,6 +54,8 @@ notebooks = [
     "pystac",
     "pystac-client",
     "planetary-computer",
+    "boto3",
+    "s3fs",
 ]
 piksel = [
     "piksel",
