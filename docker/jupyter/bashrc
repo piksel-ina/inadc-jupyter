@@ -1,0 +1,42 @@
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+HISTCONTROL=ignoreboth
+HISTSIZE=10000
+HISTFILESIZE=20000
+shopt -s histappend
+shopt -s checkwinsize
+
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+fi
+
+unset LD_PRELOAD
+
+export GPG_TTY=$(tty)
+export DASK_DISTRIBUTED__DASHBOARD__LINK="/proxy/{port}/status"
+
+alias ll='ls -lah'
+alias la='ls -A'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git log --oneline --graph --decorate'
+
+alias py='python3'
+alias jlab='jupyter-lab'
+alias jnb='jupyter notebook'
+
+export PATH="$HOME/.local/bin:$PATH"
+
+eval "$(starship init bash)"
