@@ -1,0 +1,26 @@
+[project]
+name = "inadc-jupyter"
+dynamic = ["version"]
+description = "INADC Jupyter environment and tutorial notebooks for the BIG Piksel platform"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["ipython>=9.4.0", "pytest", "ruff"]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.ruff]
+ignore = ["E501"]
+fix = true
+
+[tool.ruff.lint]
+extend-select = ["ANN", "I", "RUF", "UP"]

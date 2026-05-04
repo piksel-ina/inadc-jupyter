@@ -1,0 +1,13 @@
+.venv
+.ipynb_checkpoints
+*/.ipynb_checkpoints/
+*.tif
+*.aux.xml
+__pycache__/
+*.egg-info/
+*.pyc
+.env
+backups/
+data/
+dist/
+build/
