@@ -13,6 +13,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 RUN apt-get update && apt-get install -y --no-install-recommends \
       gcc \
       g++ \
+      git \
       libpq-dev \
       python3-dev \
       build-essential \
@@ -93,7 +94,7 @@ ENV GDAL_DISABLE_READDIR_ON_OPEN="EMPTY_DIR" \
 
 COPY docker/jupyter/jupyter_lab_config.py /etc/jupyter/
 COPY docker/jupyter/jupyter_server_config.py /etc/jupyter/
-ENV JUPYTER_CONFIG_PATH=/etc/jupyter:${HOME}/.jupyter:$JUPYTER_CONFIG_PATH
+ENV JUPYTER_CONFIG_PATH=/etc/jupyter:${HOME}/.jupyter
 
 RUN mkdir -p /usr/local/share/jupyter/lab/settings
 COPY docker/jupyter/overrides.json /usr/local/share/jupyter/lab/settings/overrides.json
