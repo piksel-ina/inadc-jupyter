@@ -32,6 +32,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project --no-dev --extra jupyter --extra notebooks --extra piksel
 
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install --no-deps git+https://github.com/auspatious/coastlines.git
+
 # --- Runtime stage ---
 FROM ghcr.io/osgeo/gdal:${GDAL_VERSION} AS runtime
 

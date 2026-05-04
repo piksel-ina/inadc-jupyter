@@ -57,7 +57,6 @@ notebooks = [
 ]
 piksel = [
     "piksel",
-    "coastlines",
     "datacube-compute",
 ]
 dev = [
@@ -68,7 +67,6 @@ dev = [
 
 [tool.uv.sources]
 piksel = { git = "https://github.com/piksel-ina/piksel-notebooks.git" }
-coastlines = { git = "https://github.com/auspatious/coastlines.git" }
 datacube-compute = { url = "https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl" }
 
 [build-system]
