@@ -5,11 +5,71 @@ description = "INADC Jupyter environment and tutorial notebooks for the BIG Piks
 readme = "README.md"
 requires-python = ">=3.12"
 license = { file = "LICENSE" }
-
 dependencies = []
+authors = [
+    { name = "Muhammad Taufik" },
+    { name = "Alex G Leith" },
+]
 
 [project.optional-dependencies]
-dev = ["ipython>=9.4.0", "pytest", "ruff"]
+jupyter = [
+    "jupyterhub>=5.0",
+    "jupyterlab>=4.0",
+    "notebook",
+    "ipykernel",
+    "ipywidgets>=8.0",
+    "jupyter-resource-usage",
+    "jupyter-server-proxy",
+    "jupyter-sshd-proxy",
+    "jupyterlab-git",
+    "nbconvert",
+    "jupyterlab-myst",
+    "jupyterlab-code-formatter",
+    "jupyterlab-execute-time",
+    "dask-labextension",
+    "bokeh",
+    "black",
+    "isort",
+    "autopep8",
+]
+notebooks = [
+    "datacube>=1.9.18",
+    "odc-geo",
+    "odc-stac>=0.4.0",
+    "odc-algo",
+    "odc-ui",
+    "dea-tools",
+    "eo-tides",
+    "dask[distributed]",
+    "numpy",
+    "pandas",
+    "xarray",
+    "matplotlib",
+    "scipy",
+    "scikit-image",
+    "scikit-learn",
+    "folium",
+    "geopandas",
+    "ipyleaflet",
+    "pystac",
+    "pystac-client",
+    "planetary-computer",
+]
+piksel = [
+    "piksel",
+    "coastlines",
+    "datacube-compute",
+]
+dev = [
+    "ipython>=9.4.0",
+    "pytest",
+    "ruff",
+]
+
+[tool.uv.sources]
+piksel = { git = "https://github.com/piksel-ina/piksel-notebooks.git" }
+coastlines = { git = "https://github.com/auspatious/coastlines.git" }
+datacube-compute = { url = "https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl" }
 
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
