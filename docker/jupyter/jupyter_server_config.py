@@ -28,3 +28,7 @@ c.Application.log_level = 'INFO'
 # ---- ssl (always disabled in container) --------
 c.ServerApp.certfile = ''
 c.ServerApp.keyfile = ''
+
+c.ResourceUseDisplay.mem_warning_threshold = 0.1
+c.ResourceUseDisplay.disk_warning_threshold = 0.2
+c.ResourceUseDisplay.track_cpu_percent = True

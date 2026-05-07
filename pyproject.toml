@@ -19,6 +19,7 @@ jupyter = [
     "ipykernel",
     "ipywidgets>=8.0",
     "jupyter-resource-usage",
+    "psutil",
     "jupyter-server-proxy",
     "jupyter-sshd-proxy",
     "jupyterlab-git",
@@ -56,6 +57,7 @@ notebooks = [
     "planetary-computer",
     "boto3",
     "s3fs",
+    "s3path",
 ]
 piksel = [
     "piksel",

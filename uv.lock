@@ -1236,6 +1236,7 @@ jupyter = [
     { name = "jupyterlab-myst" },
     { name = "nbconvert" },
     { name = "notebook" },
+    { name = "psutil" },
 ]
 notebooks = [
     { name = "boto3" },
@@ -1257,6 +1258,7 @@ notebooks = [
     { name = "pystac" },
     { name = "pystac-client" },
     { name = "s3fs" },
+    { name = "s3path" },
     { name = "scikit-image" },
     { name = "scikit-learn" },
     { name = "scipy" },
@@ -1306,11 +1308,13 @@ requires-dist = [
     { name = "pandas", marker = "extra == 'notebooks'" },
     { name = "piksel", marker = "extra == 'piksel'", git = "https://github.com/piksel-ina/piksel-notebooks.git" },
     { name = "planetary-computer", marker = "extra == 'notebooks'" },
+    { name = "psutil", marker = "extra == 'jupyter'" },
     { name = "pystac", marker = "extra == 'notebooks'" },
     { name = "pystac-client", marker = "extra == 'notebooks'" },
     { name = "pytest", marker = "extra == 'dev'" },
     { name = "ruff", marker = "extra == 'dev'" },
     { name = "s3fs", marker = "extra == 'notebooks'" },
+    { name = "s3path", marker = "extra == 'notebooks'" },
     { name = "scikit-image", marker = "extra == 'notebooks'" },
     { name = "scikit-learn", marker = "extra == 'notebooks'" },
     { name = "scipy", marker = "extra == 'notebooks'" },
@@ -3248,6 +3252,19 @@ wheels = [
 ]
 
 [[package]]
+name = "s3path"
+version = "0.6.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "boto3" },
+    { name = "smart-open" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/94/61/246ed47bc9861207c5da53eb73ea8862ad76902fe3c7c4a7ef86b7e4540e/s3path-0.6.5.tar.gz", hash = "sha256:91397e556f8fd9b000b8fc7eda876384ce279e7c8e77a3cb22407a5c9296393c", size = 36394, upload-time = "2026-01-24T17:05:14.839Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f8/8b/b0bfd562ed8c17c8f8d4bb2663627d6a39c8b76699d059074ec4f1c2a1a0/s3path-0.6.5-py3-none-any.whl", hash = "sha256:0d2beb07a41558dada544c427d2c590afd50d510fbe8b7d8940fa6e9de9dce70", size = 29578, upload-time = "2026-01-24T17:05:13.346Z" },
+]
+
+[[package]]
 name = "s3transfer"
 version = "0.17.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3436,6 +3453,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/0c/52/f38586b82b2935f8b59a09b0a79c545a22ed062e728c9418bafeb51f61e0/slicerator-1.1.0.tar.gz", hash = "sha256:44010a7f5cd87680c07213b5cabe81d1fb71252962943e5373ee7d14605d6046", size = 38283, upload-time = "2022-04-07T18:54:08.17Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e8/ae/fa6cd331b364ad2bbc31652d025f5747d89cbb75576733dfdf8efe3e4d62/slicerator-1.1.0-py3-none-any.whl", hash = "sha256:167668d48c6d3a5ba0bd3d54b2688e81ee267dc20aef299e547d711e6f3c441a", size = 10274, upload-time = "2022-04-07T18:54:07.029Z" },
+]
+
+[[package]]
+name = "smart-open"
+version = "7.6.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "wrapt" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/14/33/7a00ac9b4a63afb4279b99a766f6cbe56c443526dcbf5db97b219e21fde9/smart_open-7.6.0.tar.gz", hash = "sha256:44717f46b5ff276fac03b88e5d13d1c416f064f3b7b081381b0fa8889004bd7e", size = 54548, upload-time = "2026-04-13T09:48:04.347Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/de/bc/2761410d0541e975f384bc89f062d716bf119499dd097eb1af33dcd3b1c0/smart_open-7.6.0-py3-none-any.whl", hash = "sha256:2a78f454610a826aa688065b54b4a0a9b12a5599fa61d5190e9bac2df5e5f53f", size = 64591, upload-time = "2026-04-13T09:48:02.687Z" },
 ]
 
 [[package]]

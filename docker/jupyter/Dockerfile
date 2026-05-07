@@ -35,6 +35,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project --no-dev --extra jupyter --extra notebooks --extra piksel
 
 RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install python-geohash mapclassify dea-intertidal && \
     uv pip install --no-deps git+https://github.com/auspatious/coastlines.git
 
 # --- Runtime stage ---
@@ -108,6 +109,10 @@ COPY --chown=${NB_USER}:${NB_USER} docker/jupyter/starship.toml ${HOME}/.config/
 
 COPY docker/jupyter/start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
+
+COPY docker/jupyter/scripts/memory_watchdog.py /usr/local/bin/memory_watchdog.py
+COPY docker/jupyter/scripts/disk_monitor.sh /usr/local/bin/disk_monitor.sh
+RUN chmod +x /usr/local/bin/memory_watchdog.py /usr/local/bin/disk_monitor.sh
 
 RUN git config --system --add safe.directory '*'
 
