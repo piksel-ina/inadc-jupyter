@@ -1,41 +1,56 @@
-name: Build inadc-jupyter Image
-run-name: "inadc-jupyter: ${{ github.ref_name }}"
+name: Build Jupyter Image
+run-name: "Jupyter: ${{ github.ref_name }}"
 
 on:
   push:
     tags:
-      - "jupyter-lab-*"
+      - "jupyter-lab-v*"
+      - "dev-jupyter-v*"
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
   ECR_REGISTRY: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com
-  IMAGE_NAME: jupyter-lab
-  CACHE_NAME: jupyter-lab-cache
 
 jobs:
-  validate-tag:
+  prepare:
     runs-on: ubuntu-latest
     outputs:
+      dockerfile: ${{ steps.parse.outputs.dockerfile }}
+      ecr_repo: ${{ steps.parse.outputs.ecr_repo }}
+      cache_repo: ${{ steps.parse.outputs.cache_repo }}
       image_tag: ${{ steps.parse.outputs.image_tag }}
     steps:
       - name: Validate tag format
         run: |
           TAG_NAME="${GITHUB_REF#refs/tags/}"
-          if [[ ! "$TAG_NAME" =~ ^jupyter-lab-v[0-9]{8}-[0-9]{4}$ ]]; then
+          if [[ "$TAG_NAME" =~ ^jupyter-lab-v[0-9]{8}-[0-9]{4}$ ]]; then
+            echo "Tag format valid (production): $TAG_NAME"
+          elif [[ "$TAG_NAME" =~ ^dev-jupyter-v[0-9]{8}-[0-9]{4}$ ]]; then
+            echo "Tag format valid (dev): $TAG_NAME"
+          else
             echo "::error::Invalid tag format: $TAG_NAME"
-            echo "Expected: jupyter-lab-vYYYYMMDD-HHMM (e.g. jupyter-lab-v20260504-1200)"
+            echo "Expected: jupyter-lab-vYYYYMMDD-HHMM or dev-jupyter-vYYYYMMDD-HHMM"
             exit 1
           fi
-          echo "Tag format valid: $TAG_NAME"
 
-      - name: Parse image tag
+      - name: Parse image target
         id: parse
         run: |
-          IMAGE_TAG="${GITHUB_REF#refs/tags/jupyter-lab-}"
-          echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+          TAG="${GITHUB_REF#refs/tags/}"
+          if [[ "$TAG" == dev-jupyter-v* ]]; then
+            echo "dockerfile=docker/jupyter-dev/Dockerfile" >> "$GITHUB_OUTPUT"
+            echo "ecr_repo=jupyter-dev" >> "$GITHUB_OUTPUT"
+            echo "cache_repo=jupyter-dev-cache" >> "$GITHUB_OUTPUT"
+            echo "image_tag=${TAG#dev-jupyter-}" >> "$GITHUB_OUTPUT"
+          else
+            echo "dockerfile=docker/jupyter/Dockerfile" >> "$GITHUB_OUTPUT"
+            echo "ecr_repo=jupyter-lab" >> "$GITHUB_OUTPUT"
+            echo "cache_repo=jupyter-lab-cache" >> "$GITHUB_OUTPUT"
+            echo "image_tag=${TAG#jupyter-lab-}" >> "$GITHUB_OUTPUT"
+          fi
 
   build-push:
-    needs: validate-tag
+    needs: prepare
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -59,10 +74,10 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.ECR_REGISTRY }}/${{ needs.prepare.outputs.ecr_repo }}
           labels: |
             org.opencontainers.image.title=inadc-jupyter
-            org.opencontainers.image.version=${{ needs.validate-tag.outputs.image_tag }}
+            org.opencontainers.image.version=${{ needs.prepare.outputs.image_tag }}
             org.opencontainers.image.vendor=Badan Informasi Geospasial
 
       - name: Set up Docker Buildx
@@ -72,12 +87,12 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          file: ./docker/jupyter/Dockerfile
+          file: ${{ needs.prepare.outputs.dockerfile }}
           push: true
-          tags: ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.validate-tag.outputs.image_tag }}
+          tags: ${{ env.ECR_REGISTRY }}/${{ needs.prepare.outputs.ecr_repo }}:${{ needs.prepare.outputs.image_tag }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.ECR_REGISTRY }}/${{ env.CACHE_NAME }}
-          cache-to: type=registry,ref=${{ env.ECR_REGISTRY }}/${{ env.CACHE_NAME }},mode=max
+          cache-from: type=registry,ref=${{ env.ECR_REGISTRY }}/${{ needs.prepare.outputs.cache_repo }}
+          cache-to: type=registry,ref=${{ env.ECR_REGISTRY }}/${{ needs.prepare.outputs.cache_repo }},mode=max
           platforms: linux/amd64
 
       - name: Build Summary
@@ -87,8 +102,9 @@ jobs:
           ## Docker Build Report
           Successfully built and pushed to ECR.
 
-          ### ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.validate-tag.outputs.image_tag }}
+          ### ${{ env.ECR_REGISTRY }}/${{ needs.prepare.outputs.ecr_repo }}:${{ needs.prepare.outputs.image_tag }}
 
-          **Cache**: \`${{ env.ECR_REGISTRY }}/${{ env.CACHE_NAME }}\`
+          **Dockerfile**: \`${{ needs.prepare.outputs.dockerfile }}\`
+          **Cache**: \`${{ env.ECR_REGISTRY }}/${{ needs.prepare.outputs.cache_repo }}\`
 
           EOF

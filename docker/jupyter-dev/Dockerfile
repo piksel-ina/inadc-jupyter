@@ -1,5 +1,7 @@
+ARG GDAL_VERSION=ubuntu-small-3.12.0
+
 # ---------- Stage 1: Base System Setup --------------------------------------
-FROM ghcr.io/osgeo/gdal:ubuntu-small-3.12.0 AS system-base
+FROM ghcr.io/osgeo/gdal:${GDAL_VERSION} AS system-base
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=UTC
@@ -22,6 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     tree \
     htop \
+    tini \
     libpq-dev \
     libxml2-dev \
     libxslt1-dev \
@@ -30,7 +33,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     make \
     gcc \
     g++ \
-    libspatialindex-dev  \
+    libspatialindex-dev \
+    procps \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -53,7 +57,23 @@ RUN curl -sS https://starship.rs/install.sh | sh -s -- -y
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# ---------- Stage 3: User Setup --------------------------------------
+# ---------- Stage 3: Builder ------------------------------------------------
+FROM tools-setup AS builder
+
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_PYTHON_DOWNLOADS=0 \
+    SETUPTOOLS_SCM_PRETEND_VERSION=0.0.0
+
+WORKDIR /app
+
+COPY pyproject.toml uv.lock LICENSE ./
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv venv /app/.venv && \
+    uv sync --locked --no-install-project --no-dev --extra jupyter
+
+# ---------- Stage 4: User Setup ---------------------------------------------
 FROM tools-setup AS user-setup
 
 RUN EXISTING_USER=$(getent passwd 1000 | cut -d: -f1) && \
@@ -61,50 +81,38 @@ RUN EXISTING_USER=$(getent passwd 1000 | cut -d: -f1) && \
     usermod -l jovyan -d /home/jovyan -m $EXISTING_USER && \
     groupmod -n jovyan $EXISTING_GROUP && \
     echo "jovyan ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
-    mkdir -p /home/jovyan/.config /home/jovyan/.jupyter && \ 
+    mkdir -p /home/jovyan/.config /home/jovyan/.jupyter && \
     chown -R jovyan:jovyan /home/jovyan
 
-# ---------- Stage 4: Final Image --------------------------------------
+# ---------- Stage 5: Final Image --------------------------------------------
 FROM user-setup AS final-image
 
 ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
     JUPYTER_ENABLE_LAB=yes
 
-RUN uv pip install --system --break-system-packages \
-    jupyterhub>=5.0 \
-    jupyterlab>=4.0 \
-    notebook \
-    ipykernel \
-    jupyter-server-proxy \
-    jupyter-sshd-proxy \
-    ipywidgets>=8.0 \
-    jupyter-resource-usage \
-    jupyterlab-git \
-    nbconvert \
-    jupyterlab-myst \
-    requests \
-    pyyaml \
-    jupyterlab_code_formatter \  
-    jupyterlab-execute-time  \
-    black \
-    isort \
-    autopep8 \
-    dask[complete] \
-    dask-labextension \
-    bokeh \
-    && jupyter lab build --dev-build=False --minimize=False \
-    && rm -rf /home/jovyan/.cache /tmp/*
+COPY --from=builder /app/.venv /app/.venv
+ENV PATH="/app/.venv/bin:$PATH"
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    jupyter lab build --dev-build=False --minimize=False && \
+    rm -rf /home/jovyan/.cache /tmp/*
 
 RUN mkdir -p /usr/local/share/jupyter/lab/settings /etc/jupyter
 COPY docker/jupyter-dev/overrides.json /usr/local/share/jupyter/lab/settings/overrides.json
 COPY docker/jupyter-dev/jupyter_server_config.py /etc/jupyter/jupyter_server_config.py
 COPY docker/jupyter-dev/jupyter_lab_config.py /etc/jupyter/jupyter_lab_config.py
+ENV JUPYTER_CONFIG_PATH=/etc/jupyter:/home/jovyan/.jupyter
 
 RUN mkdir -p /etc/skel/.config
 COPY docker/jupyter-dev/bashrc /etc/skel/.bashrc
 COPY docker/jupyter-dev/starship.toml /etc/skel/.config/starship.toml
 COPY --chown=jovyan:jovyan docker/jupyter-dev/bashrc /home/jovyan/.bashrc
 COPY --chown=jovyan:jovyan docker/jupyter-dev/starship.toml /home/jovyan/.config/starship.toml
+
+COPY docker/jupyter/scripts/memory_watchdog.py /usr/local/bin/memory_watchdog.py
+COPY docker/jupyter/scripts/disk_monitor.sh /usr/local/bin/disk_monitor.sh
+RUN chmod +x /usr/local/bin/memory_watchdog.py /usr/local/bin/disk_monitor.sh
 
 COPY docker/jupyter-dev/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
@@ -119,6 +127,5 @@ WORKDIR /home/jovyan
 
 EXPOSE 8888 8787
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["tini", "-g", "--", "/usr/local/bin/entrypoint.sh"]
 CMD ["jupyter-lab", "--ip=0.0.0.0", "--no-browser"]
-
