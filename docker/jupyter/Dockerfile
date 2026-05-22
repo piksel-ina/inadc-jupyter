@@ -94,18 +94,18 @@ ENV GDAL_DISABLE_READDIR_ON_OPEN="EMPTY_DIR" \
     GDAL_HTTP_RETRY_DELAY="1" \
     DASK_DISTRIBUTED__DASHBOARD__LINK="/proxy/{port}/status"
 
-COPY docker/jupyter/jupyter_lab_config.py /etc/jupyter/
-COPY docker/jupyter/jupyter_server_config.py /etc/jupyter/
+COPY docker/shared/jupyter_lab_config.py /etc/jupyter/
+COPY docker/shared/jupyter_server_config.py /etc/jupyter/
 ENV JUPYTER_CONFIG_PATH=/etc/jupyter:${HOME}/.jupyter
 
 RUN mkdir -p /usr/local/share/jupyter/lab/settings
-COPY docker/jupyter/overrides.json /usr/local/share/jupyter/lab/settings/overrides.json
+COPY docker/shared/overrides.json /usr/local/share/jupyter/lab/settings/overrides.json
 
 RUN mkdir -p /etc/skel/.config
+COPY docker/shared/starship.toml /etc/skel/.config/starship.toml
+COPY --chown=${NB_USER}:${NB_USER} docker/shared/starship.toml ${HOME}/.config/starship.toml
 COPY docker/jupyter/bashrc /etc/skel/.bashrc
-COPY docker/jupyter/starship.toml /etc/skel/.config/starship.toml
 COPY --chown=${NB_USER}:${NB_USER} docker/jupyter/bashrc ${HOME}/.bashrc
-COPY --chown=${NB_USER}:${NB_USER} docker/jupyter/starship.toml ${HOME}/.config/starship.toml
 
 COPY docker/jupyter/start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh

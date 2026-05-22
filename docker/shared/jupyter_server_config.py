@@ -1,0 +1,38 @@
+import os
+c = get_config()                       # noqa: F821
+
+# ---- terminal -----------------------------------
+c.ServerApp.terminado_settings = {
+    "shell_command": [os.environ.get("SHELL", "/bin/bash")]
+}
+
+# ---- basic behavior -----------------------------
+c.ServerApp.root_dir = "/home/jovyan"
+
+# ---- basic network settings --------------------
+c.ServerApp.ip = '0.0.0.0'
+c.ServerApp.allow_root = True
+c.ServerApp.open_browser = False
+
+# ---- content management -------------------------
+c.ServerApp.kernel_spec_manager_class = 'jupyter_client.kernelspec.KernelSpecManager'
+c.ServerApp.kernel_manager_class = 'jupyter_server.services.kernels.kernelmanager.MappingKernelManager'
+if os.environ.get("JUPYTER_SHOW_HIDDEN", "").lower() == "true":
+    c.ContentsManager.allow_hidden = True
+    c.ContentsManager.hide_globs = []
+
+# ---- performance settings ----------------------
+c.ServerApp.iopub_data_rate_limit = 1000000000
+c.ServerApp.iopub_msg_rate_limit = 3000
+
+# ---- logging ------------------------------------
+c.Application.log_level = 'INFO'
+
+# ---- ssl (always disabled in container) --------
+c.ServerApp.certfile = ''
+c.ServerApp.keyfile = ''
+
+# ---- resource usage display ---------------------
+c.ResourceUseDisplay.mem_warning_threshold = 0.1
+c.ResourceUseDisplay.disk_warning_threshold = 0.2
+c.ResourceUseDisplay.track_cpu_percent = True

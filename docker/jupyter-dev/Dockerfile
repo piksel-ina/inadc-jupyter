@@ -89,7 +89,8 @@ FROM user-setup AS final-image
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    JUPYTER_ENABLE_LAB=yes
+    JUPYTER_ENABLE_LAB=yes \
+    JUPYTER_SHOW_HIDDEN=true
 
 COPY --from=builder /app/.venv /app/.venv
 ENV PATH="/app/.venv/bin:$PATH"
@@ -100,15 +101,15 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 RUN mkdir -p /usr/local/share/jupyter/lab/settings /etc/jupyter
 COPY docker/jupyter-dev/overrides.json /usr/local/share/jupyter/lab/settings/overrides.json
-COPY docker/jupyter-dev/jupyter_server_config.py /etc/jupyter/jupyter_server_config.py
-COPY docker/jupyter-dev/jupyter_lab_config.py /etc/jupyter/jupyter_lab_config.py
+COPY docker/shared/jupyter_server_config.py /etc/jupyter/jupyter_server_config.py
+COPY docker/shared/jupyter_lab_config.py /etc/jupyter/jupyter_lab_config.py
 ENV JUPYTER_CONFIG_PATH=/etc/jupyter:/home/jovyan/.jupyter
 
 RUN mkdir -p /etc/skel/.config
+COPY docker/shared/starship.toml /etc/skel/.config/starship.toml
+COPY --chown=jovyan:jovyan docker/shared/starship.toml /home/jovyan/.config/starship.toml
 COPY docker/jupyter-dev/bashrc /etc/skel/.bashrc
-COPY docker/jupyter-dev/starship.toml /etc/skel/.config/starship.toml
 COPY --chown=jovyan:jovyan docker/jupyter-dev/bashrc /home/jovyan/.bashrc
-COPY --chown=jovyan:jovyan docker/jupyter-dev/starship.toml /home/jovyan/.config/starship.toml
 
 COPY docker/jupyter/scripts/memory_watchdog.py /usr/local/bin/memory_watchdog.py
 COPY docker/jupyter/scripts/disk_monitor.sh /usr/local/bin/disk_monitor.sh
