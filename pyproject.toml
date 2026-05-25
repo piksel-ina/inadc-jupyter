@@ -1,6 +1,6 @@
 [project]
 name = "inadc-jupyter"
-dynamic = ["version"]
+version = "0.1.0"
 description = "INADC Jupyter environment and tutorial notebooks for the BIG Piksel platform"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
@@ -74,11 +74,11 @@ piksel = { git = "https://github.com/piksel-ina/piksel-notebooks.git" }
 datacube-compute = { url = "https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl" }
 
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.hatch.version]
-source = "vcs"
+[tool.hatch.build.targets.wheel]
+packages = ["inadc_jupyter"]
 
 [tool.ruff]
 ignore = ["E501"]

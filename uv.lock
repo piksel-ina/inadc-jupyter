@@ -1209,6 +1209,7 @@ wheels = [
 
 [[package]]
 name = "inadc-jupyter"
+version = "0.1.0"
 source = { editable = "." }
 
 [package.optional-dependencies]
@@ -1320,7 +1321,7 @@ requires-dist = [
     { name = "scipy", marker = "extra == 'notebooks'" },
     { name = "xarray", marker = "extra == 'notebooks'" },
 ]
-provides-extras = ["dev", "jupyter", "notebooks", "piksel"]
+provides-extras = ["jupyter", "notebooks", "piksel", "dev"]
 
 [[package]]
 name = "iniconfig"
