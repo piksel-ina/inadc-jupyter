@@ -1,0 +1,41 @@
+# Connects to the inadc-core (piksel-core) ODC stack via the shared piksel-net network.
+# Ensure the inadc-core stack is running before starting this service.
+
+services:
+  jupyter:
+    build:
+      context: .
+      dockerfile: docker/jupyter-dev/Dockerfile
+    platform: linux/x86_64
+    user: "jovyan"
+    environment:
+      - ODC_DEFAULT_DB_USERNAME=piksel_user
+      - ODC_DEFAULT_DB_DATABASE=piksel_db
+      - ODC_DEFAULT_DB_HOSTNAME=postgres
+      - ODC_DEFAULT_DB_PASSWORD=passwordPiksel
+      - ODC_DEFAULT_DB_PORT=5432
+      - ODC_DEFAULT_INDEX_DRIVER=postgis
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=
+      - JUPYTER_ALLOW_INSECURE_WRITES=1
+      - PYTHONPATH=/home/jovyan/work/notebooks:/home/jovyan/work
+      - GRANT_SUDO=yes
+      - SUDO_USER=jovyan
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work/notebooks
+    networks:
+      - piksel-net
+    restart: always
+    command:
+      - jupyter-lab
+      - --ip=0.0.0.0
+      - --allow-root
+      - --no-browser
+      - --NotebookApp.token=
+      - --NotebookApp.password=
+
+networks:
+  piksel-net:
+    external: true

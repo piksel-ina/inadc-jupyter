@@ -34,7 +34,8 @@ jupyter = [
     "autopep8",
 ]
 notebooks = [
-    "datacube>=1.9.18",
+    "datacube[postgres]>=1.9.18",
+    "psycopg2-binary",
     "odc-geo",
     "odc-stac>=0.4.0",
     "odc-algo",

@@ -714,6 +714,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/67/39/21fa1b4ecff2a2596831ca62dd1839c6c32e91071e6ae2d1ef227eada094/datacube-1.9.18-py3-none-any.whl", hash = "sha256:908c28e69055c1cd8ad7140d1bbd70abf6d20f23bbe101a81f3f2a18eff9d45c", size = 474316, upload-time = "2026-04-16T02:11:40.242Z" },
 ]
 
+[package.optional-dependencies]
+postgres = [
+    { name = "psycopg2" },
+]
+
 [[package]]
 name = "datacube-compute"
 version = "0.0.7"
@@ -1242,7 +1247,7 @@ jupyter = [
 notebooks = [
     { name = "boto3" },
     { name = "dask", extra = ["distributed"] },
-    { name = "datacube" },
+    { name = "datacube", extra = ["postgres"] },
     { name = "dea-tools" },
     { name = "eo-tides" },
     { name = "folium" },
@@ -1256,6 +1261,7 @@ notebooks = [
     { name = "odc-ui" },
     { name = "pandas" },
     { name = "planetary-computer" },
+    { name = "psycopg2-binary" },
     { name = "pystac" },
     { name = "pystac-client" },
     { name = "s3fs" },
@@ -1278,7 +1284,7 @@ requires-dist = [
     { name = "boto3", marker = "extra == 'notebooks'" },
     { name = "dask", extras = ["distributed"], marker = "extra == 'notebooks'" },
     { name = "dask-labextension", marker = "extra == 'jupyter'" },
-    { name = "datacube", marker = "extra == 'notebooks'", specifier = ">=1.9.18" },
+    { name = "datacube", extras = ["postgres"], marker = "extra == 'notebooks'", specifier = ">=1.9.18" },
     { name = "datacube-compute", marker = "extra == 'piksel'", url = "https://github.com/auspatious/datacube-compute/releases/download/0.0.7/datacube_compute-0.0.7-cp312-cp312-linux_x86_64.whl" },
     { name = "dea-tools", marker = "extra == 'notebooks'" },
     { name = "eo-tides", marker = "extra == 'notebooks'" },
@@ -1310,6 +1316,7 @@ requires-dist = [
     { name = "piksel", marker = "extra == 'piksel'", git = "https://github.com/piksel-ina/piksel-notebooks.git" },
     { name = "planetary-computer", marker = "extra == 'notebooks'" },
     { name = "psutil", marker = "extra == 'jupyter'" },
+    { name = "psycopg2-binary", marker = "extra == 'notebooks'" },
     { name = "pystac", marker = "extra == 'notebooks'" },
     { name = "pystac-client", marker = "extra == 'notebooks'" },
     { name = "pytest", marker = "extra == 'dev'" },
@@ -2729,6 +2736,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/ca/c6/32b0835dbc2122617902b649d76a91c1e75406e76bf3d595b0c3bb5ffad6/psycopg_binary-3.3.4-cp312-cp312-musllinux_1_2_riscv64.whl", hash = "sha256:773d573e11f437ce0bdb95b7c18dc58390494f96d43f8b45b9760436114f7652", size = 3926197, upload-time = "2026-05-01T23:28:55.55Z" },
     { url = "https://files.pythonhosted.org/packages/cd/68/d190ef0c0c5b16ded07831dabc8ddd412f4cdab07ec6e30ed38d9bda0e1f/psycopg_binary-3.3.4-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:71e55ccbdfae79a2ed9c6369c3008a3025817ff9d7e27b32a2d84e2a4267e66e", size = 4236627, upload-time = "2026-05-01T23:29:05.336Z" },
     { url = "https://files.pythonhosted.org/packages/25/8f/81dcbc2e8454b74d14881275ea45f00791052dac531a9fa8be1730d1685b/psycopg_binary-3.3.4-cp312-cp312-win_amd64.whl", hash = "sha256:494ca54901be8cf9eb7e02c25b731f2317c378efa44f43e8f9bd0e1184ae7be4", size = 3560782, upload-time = "2026-05-01T23:29:11.967Z" },
+]
+
+[[package]]
+name = "psycopg2"
+version = "2.9.12"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/c7/bc/f66df707ed1aec949fbf24e4460e4f4277a7ba23cdadb3965bb1f634ddb9/psycopg2-2.9.12.tar.gz", hash = "sha256:1dedb1c7a1d8552c4a6044c6b1c41a52e6a8e2d144af83eccac758076b1b7c15", size = 379683, upload-time = "2026-04-20T23:36:11.013Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7e/b2/7319dc488444b1dfe9ce89c4440df1d5425e2579e6ce9a63e2b70f648491/psycopg2-2.9.12-cp312-cp312-win_amd64.whl", hash = "sha256:83d48e66e18c301d832e93c984a7bcbc0f4ac3bb79e2137e3bc335978c756dc0", size = 2757068, upload-time = "2026-04-20T23:33:20.664Z" },
 ]
 
 [[package]]

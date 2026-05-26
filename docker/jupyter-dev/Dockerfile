@@ -71,7 +71,7 @@ COPY pyproject.toml uv.lock LICENSE ./
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv venv /app/.venv && \
-    uv sync --locked --no-install-project --no-dev --extra jupyter
+    uv sync --locked --no-install-project --no-dev --extra jupyter --extra notebooks
 
 # ---------- Stage 4: User Setup ---------------------------------------------
 FROM tools-setup AS user-setup
