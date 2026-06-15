@@ -27,8 +27,6 @@ There are no tests and no test runner configured.
 - Leave `execution_count: null` and `outputs: []` for new/cleaned cells
 - Notebooks are delivered to users via nbgitpuller on JupyterHub login
 
-See `.opencode/skills/jupyter-notebook/SKILL.md` for full notebook authoring guidance.
-
 ## Docker
 
 Two images, both based on `ghcr.io/osgeo/gdal:ubuntu-small-3.12.0`:
