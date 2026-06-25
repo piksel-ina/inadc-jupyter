@@ -63,3 +63,30 @@ rebuild: ## Rebuild and restart Jupyter (no cache)
 	@echo "$(BLUE)Rebuilding Jupyter (no cache)...$(NC)"
 	$(DOCKER_COMPOSE) build --no-cache jupyter
 	@$(MAKE) up
+
+# ============================================================================
+# MyST gallery site (site/)
+# Requires Node + npm. On the dev box, source nvm before running these:
+#   source "$HOME/.nvm/nvm.sh"
+# ============================================================================
+
+.PHONY: site-install
+site-install: ## Install MyST CLI deps for the gallery site
+	@echo "$(BLUE)Installing site dependencies...$(NC)"
+	cd site && npm ci
+
+.PHONY: site-start
+site-start: ## Start the MyST dev server (live preview)
+	@echo "$(BLUE)Starting MyST dev server at http://localhost:3000$(NC)"
+	cd site && npm run start
+
+.PHONY: site-build
+site-build: ## Build the static gallery HTML into site/_build/html
+	@echo "$(BLUE)Building static gallery site...$(NC)"
+	cd site && npm run build
+	@echo "$(GREEN)Output: site/_build/html/$(NC)"
+
+.PHONY: site-clean
+site-clean: ## Remove the MyST build output and generated bundle
+	@echo "$(BLUE)Cleaning site/_build and generated CSS bundle...$(NC)"
+	cd site && npm run clean

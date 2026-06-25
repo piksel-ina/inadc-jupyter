@@ -1,0 +1,17 @@
+{
+  "name": "inadc-jupyter-site",
+  "version": "0.0.0",
+  "private": true,
+  "description": "MyST site for the Piksel Notebooks gallery (inadc-jupyter)",
+  "scripts": {
+    "css:bundle": "cat styles/pk-tokens.css styles/pk-overrides.css styles/pk-light-lock.css > styles/pk-bundle.css",
+    "prestart": "npm run css:bundle",
+    "prebuild": "npm run css:bundle",
+    "start": "myst start",
+    "build": "myst build --html",
+    "clean": "rm -rf _build styles/pk-bundle.css"
+  },
+  "dependencies": {
+    "mystmd": "^1.10.1"
+  }
+}

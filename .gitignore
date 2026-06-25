@@ -1,4 +1,3 @@
-.venv
 .ipynb_checkpoints
 */.ipynb_checkpoints/
 *.tif
@@ -11,3 +10,9 @@ backups/
 data/
 dist/
 build/
+
+# MyST site (site/)
+site/_build/
+site/node_modules/
+site/.myst/
+site/styles/pk-bundle.css

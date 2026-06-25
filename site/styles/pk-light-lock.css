@@ -1,0 +1,138 @@
+/* ============================================================================
+   Light-only enforcement.
+
+   book-theme has no config option to disable dark mode; its inline <head>
+   script adds `<html class="dark">` when the OS prefers dark, and there is
+   no way to inject a script earlier to pre-set `class="light"`.
+
+   Strategy: when `html.dark` is set, force every Tailwind `dark:` variant
+   to a single light-mode value. Visual nuance between e.g. gray-600 and
+   gray-700 is lost, but the page stays readable in both light and dark OS
+   preferences.
+
+   This file MUST load after book-theme's compiled CSS — site.options.style
+   handles that ordering (myst-theme.css is served last).
+   ============================================================================ */
+
+html {
+  color-scheme: light !important;
+}
+
+html.dark {
+  color-scheme: light !important;
+  background-color: var(--pk-bg) !important;
+  color: var(--pk-fg) !important;
+}
+
+html.dark body {
+  background-color: var(--pk-bg) !important;
+  color: var(--pk-fg) !important;
+}
+
+/* ----------------------------------------------------------------------------
+   Tailwind Typography (`prose` plugin) variables.
+
+   book-theme applies `.article` / `.prose` to the main content container,
+   which sets `color: var(--tw-prose-body)`. In dark mode, all prose color
+   variables switch to their `--tw-prose-invert-*` counterparts (light text
+   for dark backgrounds). Override every invert variable to the light-mode
+   equivalent so article body text, headings, links, code, etc. stay dark.
+   ---------------------------------------------------------------------------- */
+
+html.dark .article,
+html.dark .prose,
+html.dark main {
+  --tw-prose-invert-body: var(--pk-fg) !important;
+  --tw-prose-invert-headings: var(--pk-fg-strong) !important;
+  --tw-prose-invert-lead: var(--pk-fg) !important;
+  --tw-prose-invert-links: var(--pk-link) !important;
+  --tw-prose-invert-bold: var(--pk-fg-strong) !important;
+  --tw-prose-invert-counters: var(--pk-fg-muted) !important;
+  --tw-prose-invert-bullets: var(--pk-grey-3) !important;
+  --tw-prose-invert-hr: var(--pk-border-strong) !important;
+  --tw-prose-invert-quotes: var(--pk-fg) !important;
+  --tw-prose-invert-quote-borders: var(--pk-teal) !important;
+  --tw-prose-invert-captions: var(--pk-grey-1) !important;
+  --tw-prose-invert-code: var(--pk-primary-dark) !important;
+  --tw-prose-invert-pre-code: var(--pk-grey-5) !important;
+  --tw-prose-invert-pre-bg: var(--pk-ink-1) !important;
+  --tw-prose-invert-th-borders: var(--pk-ink-3) !important;
+  --tw-prose-invert-td-borders: var(--pk-grey-5) !important;
+  --tw-prose-invert-kbd: var(--pk-fg-strong) !important;
+  --tw-prose-invert-kbd-shadows: 17, 24, 39 !important;
+}
+
+/* ----------------------------------------------------------------------------
+   Neutralise Tailwind `dark:` variants by forcing them to light values.
+   Attribute selectors match any element whose class list contains
+   "dark:bg-", "dark:text-", etc. — covers every Tailwind dark utility.
+   ---------------------------------------------------------------------------- */
+
+html.dark [class*="dark:bg-"] {
+  background-color: var(--pk-bg) !important;
+  background-image: none !important;
+}
+
+html.dark [class*="dark:text-"] {
+  color: var(--pk-fg) !important;
+}
+
+/* Some chrome elements use lighter/secondary text in dark mode — keep them
+   readable but slightly muted */
+html.dark .myst-footer-link[class*="dark:text-"],
+html.dark nav [class*="dark:text-"] {
+  color: var(--pk-fg-muted) !important;
+}
+
+html.dark [class*="dark:border-"] {
+  border-color: var(--pk-border) !important;
+}
+
+html.dark [class*="dark:shadow-"] {
+  box-shadow: var(--pk-shadow-1) !important;
+}
+
+html.dark [class*="dark:ring-"] {
+  --tw-ring-color: var(--pk-primary) !important;
+}
+
+html.dark [class*="dark:fill-"] {
+  fill: var(--pk-fg) !important;
+}
+
+html.dark [class*="dark:stroke-"] {
+  stroke: var(--pk-fg) !important;
+}
+
+html.dark [class*="dark:opacity-"] {
+  opacity: 1 !important;
+}
+
+/* Hover variants compile under `.dark .dark\:hover\:X:hover` */
+
+html.dark [class*="dark:hover:bg-"]:hover {
+  background-color: var(--pk-bg-subtle) !important;
+}
+
+html.dark [class*="dark:hover:text-"]:hover {
+  color: var(--pk-link-hover) !important;
+}
+
+html.dark [class*="dark:hover:border-"]:hover {
+  border-color: var(--pk-border-strong) !important;
+}
+
+/* ----------------------------------------------------------------------------
+   Hide the color-mode toggle button so users can't switch (since switching
+   wouldn't actually do anything visible now anyway).
+   ---------------------------------------------------------------------------- */
+
+.myst-theme-button,
+button[aria-label*='theme' i],
+button[aria-label*='color' i],
+button[aria-label*='dark' i],
+button[title*='theme' i],
+button[title*='color' i],
+button[title*='dark' i] {
+  display: none !important;
+}

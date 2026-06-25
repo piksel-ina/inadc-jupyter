@@ -1,0 +1,425 @@
+/* ============================================================================
+   Piksel body-content overrides for MyST output.
+   Ported from the .theme-doc-markdown / .theme-admonition / table-of-contents /
+   pagination / details sections of main-website/src/css/custom.scss.
+
+   Selectors are best-guess based on book-theme HTML structure. Iterate after
+   running `myst build` and inspecting the actual emitted HTML.
+   ============================================================================ */
+
+/* === Base document === */
+
+html,
+body {
+  font-family: var(--pk-font-body);
+  font-size: var(--pk-text-base);
+  line-height: var(--pk-lh-relaxed);
+  color: var(--pk-fg);
+  background: var(--pk-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  border-radius: 0;
+}
+
+/* ============================================================================
+   Main article content
+   Scoped via `main` to leave chrome (navbar/sidebar/header) alone.
+   ============================================================================ */
+
+main {
+  font-size: var(--pk-text-base);
+  line-height: var(--pk-lh-loose);
+  color: var(--pk-ink-3);
+}
+
+/* === Headings === */
+
+main h1 {
+  margin-bottom: var(--pk-s-4);
+  font-family: var(--pk-font-display);
+  font-size: var(--pk-text-3xl);
+  font-weight: 300;
+  color: var(--pk-ink-1);
+  letter-spacing: -1px;
+}
+
+main h2 {
+  margin-top: var(--pk-s-8);
+  margin-bottom: var(--pk-s-3);
+  font-family: var(--pk-font-display);
+  font-size: var(--pk-text-2xl);
+  font-weight: 400;
+  color: var(--pk-ink-1);
+  letter-spacing: -0.5px;
+}
+
+main h3 {
+  margin-top: var(--pk-s-6);
+  margin-bottom: var(--pk-s-2);
+  font-family: var(--pk-font-body);
+  font-size: var(--pk-text-md);
+  font-weight: 500;
+  color: var(--pk-ink-2);
+  letter-spacing: -0.3px;
+}
+
+main h4 {
+  margin-top: var(--pk-s-5);
+  margin-bottom: var(--pk-s-2);
+  font-family: var(--pk-font-body);
+  font-size: var(--pk-text-base);
+  font-weight: 600;
+  color: var(--pk-ink-2);
+}
+
+main h5,
+main h6 {
+  margin-top: var(--pk-s-4);
+  margin-bottom: var(--pk-s-1);
+  font-family: var(--pk-font-body);
+  font-weight: 600;
+  color: var(--pk-ink-3);
+}
+
+@media (max-width: 768px) {
+  main h1 {
+    font-size: var(--pk-text-2xl);
+  }
+  main h2 {
+    font-size: var(--pk-text-xl);
+  }
+}
+
+/* === Paragraphs === */
+
+main p {
+  margin-bottom: var(--pk-s-4);
+}
+
+/* === Links === */
+
+main a {
+  color: var(--pk-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+main a:hover {
+  color: var(--pk-accent);
+}
+
+/* === Sidebar table of contents + right outline — strip bullets only === */
+
+.myst-primary-sidebar-toc ul,
+.myst-primary-sidebar-toc ol,
+.myst-primary-sidebar-toc li,
+.myst-outline-list,
+.myst-outline-list li {
+  list-style: none;
+}
+
+.myst-primary-sidebar-toc li::marker,
+.myst-outline-list li::marker {
+  content: none;
+}
+
+/* === Strong / Em === */
+
+main strong {
+  font-weight: 600;
+  color: var(--pk-ink-1);
+}
+
+main em {
+  font-style: italic;
+  color: var(--pk-ink-2);
+}
+
+/* === Lists === */
+
+main ul,
+main ol {
+  padding-left: var(--pk-s-4);
+  margin-bottom: var(--pk-s-4);
+}
+
+main ul {
+  list-style: disc;
+}
+
+main ul li::marker {
+  color: var(--pk-grey-3);
+}
+
+main ol {
+  list-style: decimal;
+}
+
+main ol li::marker {
+  font-size: var(--pk-text-sm);
+  font-weight: 500;
+  color: var(--pk-grey-1);
+}
+
+main li {
+  margin-bottom: var(--pk-s-1);
+}
+
+main li > ul,
+main li > ol {
+  margin-top: var(--pk-s-1);
+  margin-bottom: var(--pk-s-1);
+}
+
+/* === Inline code === */
+
+main code {
+  padding: 0.15em 0.4em;
+  font-family: var(--pk-font-mono);
+  font-size: 0.85em;
+  color: var(--pk-primary-dark);
+  background-color: var(--pk-ice);
+  border: 1px solid var(--pk-grey-5);
+  border-radius: 0;
+}
+
+/* === Code blocks === */
+
+main pre {
+  padding: var(--pk-s-4) var(--pk-s-5);
+  margin-bottom: var(--pk-s-5);
+  overflow-x: auto;
+  background-color: var(--pk-ink-1);
+  border-radius: 0;
+}
+
+main pre code {
+  padding: 0;
+  font-size: var(--pk-text-xs);
+  color: var(--pk-grey-5);
+  background: none;
+  border: none;
+  border-radius: 0;
+}
+
+/* === Blockquotes === */
+
+main blockquote {
+  padding: var(--pk-s-3) var(--pk-s-4);
+  margin-bottom: var(--pk-s-4);
+  color: var(--pk-ink-2);
+  background-color: var(--pk-paper-2);
+  border-left: 3px solid var(--pk-teal);
+  border-radius: 0;
+}
+
+main blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* === Tables === */
+
+main table {
+  width: 100%;
+  margin-bottom: var(--pk-s-5);
+  font-size: var(--pk-text-sm);
+  border-collapse: collapse;
+}
+
+main thead th {
+  padding: var(--pk-s-3) var(--pk-s-5) var(--pk-s-3) var(--pk-s-3);
+  font-family: var(--pk-font-mono);
+  font-size: var(--pk-text-xs);
+  font-weight: 500;
+  color: var(--pk-ink-2);
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: var(--pk-track-widest);
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--pk-ink-3);
+}
+
+main tbody tr {
+  border-bottom: 1px solid var(--pk-grey-5);
+  transition: background-color var(--pk-dur-2) var(--pk-ease);
+}
+
+main tbody tr:last-child {
+  border-bottom: none;
+}
+
+main tbody tr:hover {
+  background-color: var(--pk-paper-2);
+}
+
+main tbody td {
+  padding: var(--pk-s-2) var(--pk-s-5) var(--pk-s-2) var(--pk-s-3);
+  color: var(--pk-ink-3);
+  border: none;
+  border-bottom: 1px solid var(--pk-grey-5);
+}
+
+main tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* === Horizontal rules === */
+
+main hr {
+  margin: var(--pk-s-7) 0;
+  border: none;
+  border-top: 1px solid var(--pk-grey-4);
+}
+
+/* === Images === */
+
+main img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+main figure {
+  margin: var(--pk-s-4) 0 var(--pk-s-5);
+}
+
+main figure img {
+  display: block;
+  width: 100%;
+}
+
+main figcaption {
+  padding-top: var(--pk-s-2);
+  padding-bottom: var(--pk-s-4);
+  font-family: var(--pk-font-mono);
+  font-size: var(--pk-text-xs);
+  color: var(--pk-grey-1);
+  text-transform: uppercase;
+  letter-spacing: var(--pk-track-wide);
+  border-top: 1px solid var(--pk-grey-5);
+}
+
+/* === Details / Summary === */
+
+main details {
+  padding: var(--pk-s-3) var(--pk-s-4);
+  margin-bottom: var(--pk-s-4);
+  color: var(--pk-ink-3);
+  background-color: var(--pk-white);
+  border: 1px solid var(--pk-grey-5);
+  border-radius: 0;
+  box-shadow: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+main details:hover {
+  border-color: var(--pk-grey-4);
+  box-shadow: var(--pk-shadow-2);
+}
+
+main details[open] {
+  border-color: var(--pk-grey-4);
+}
+
+main details summary {
+  padding: var(--pk-s-1) 0;
+  font-weight: 500;
+  color: var(--pk-ink-1);
+  cursor: pointer;
+}
+
+/* ============================================================================
+   Admonitions (MyST default classes: .admonition, .admonition-*)
+   ============================================================================ */
+
+.admonition {
+  padding: var(--pk-s-3) var(--pk-s-4);
+  margin-bottom: var(--pk-s-4);
+  font-size: var(--pk-text-base);
+  color: var(--pk-ink-3);
+  background-color: var(--pk-white);
+  border: 1px solid var(--pk-grey-5);
+  border-left: 4px solid var(--pk-primary);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.admonition > .admonition-title,
+.admonition > p.admonition-title,
+.admonition-header {
+  margin-bottom: var(--pk-s-2);
+  font-family: var(--pk-font-mono);
+  font-size: var(--pk-text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--pk-track-widest);
+  color: var(--pk-primary);
+}
+
+.admonition.note,
+.admonition-note {
+  border-left-color: var(--pk-primary);
+}
+
+.admonition.tip,
+.admonition-tip {
+  border-left-color: var(--pk-teal);
+}
+
+.admonition.tip > .admonition-title,
+.admonition-tip > .admonition-header {
+  color: var(--pk-teal-dark);
+}
+
+.admonition.important,
+.admonition-important,
+.admonition.info,
+.admonition-info {
+  border-left-color: var(--pk-primary-light);
+}
+
+.admonition.important > .admonition-title,
+.admonition.info > .admonition-title,
+.admonition-important > .admonition-header,
+.admonition-info > .admonition-header {
+  color: var(--pk-primary-light);
+}
+
+.admonition.warning,
+.admonition-warning,
+.admonition.caution,
+.admonition-caution,
+.admonition.attention,
+.admonition-attention {
+  border-left-color: var(--pk-amber);
+}
+
+.admonition.warning > .admonition-title,
+.admonition.caution > .admonition-title,
+.admonition.attention > .admonition-title,
+.admonition-warning > .admonition-header,
+.admonition-caution > .admonition-header,
+.admonition-attention > .admonition-header {
+  color: var(--pk-amber);
+}
+
+.admonition.danger,
+.admonition-danger,
+.admonition.error,
+.admonition-error {
+  border-left-color: var(--pk-red);
+}
+
+.admonition.danger > .admonition-title,
+.admonition.error > .admonition-title,
+.admonition-danger > .admonition-header,
+.admonition-error > .admonition-header {
+  color: var(--pk-red);
+}

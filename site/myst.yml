@@ -1,0 +1,41 @@
+version: 1
+
+project:
+  id: piksel-notebooks
+  title: Piksel Notebooks
+  short_title: Notebooks
+  description: |
+    Executable Earth Observation notebooks for Indonesia —
+    tutorials, case studies, and product publications,
+    built on Open Data Cube.
+  keywords:
+    - Open Data Cube
+    - Earth Observation
+    - Indonesia
+    - Sentinel-2
+    - Landsat
+    - tutorials
+    - case studies
+    - reproducible workflows
+  license:
+    content: CC-BY-4.0
+    code: MIT
+  github: https://github.com/piksel-ina/inadc-jupyter
+
+  toc:
+    - file: index.md
+    - title: Tutorials
+      children:
+        - title: English
+          children:
+            - file: ../notebooks/English/Beginners_Guide/03_Landsat_SR_GettingStarted.ipynb
+        - title: Bahasa Indonesia
+          children:
+            - file: ../notebooks/Indonesia/01-Panduan-Pengguna/02_Jupyter_notebook.ipynb
+
+site:
+  template: book-theme
+  options:
+    logo_text: Piksel Notebooks
+    style: styles/pk-bundle.css
+    hide_outline: false

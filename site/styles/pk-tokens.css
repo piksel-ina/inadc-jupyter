@@ -1,0 +1,198 @@
+/* ============================================================================
+   Piksel design tokens — hand-translated from main-website/src/css/abstracts/_tokens.scss
+   and the :root block in main-website/src/css/custom.scss.
+
+   Source-of-truth: main-website. Drift between this file and main-website's
+   compiled tokens is a known accepted risk — re-translate when main-website
+   updates its token system.
+   ============================================================================ */
+
+/* === Self-hosted fonts === */
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../fonts/space-grotesk-latin.woff2') format('woff2');
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('../fonts/ibm-plex-sans-latin.woff2') format('woff2');
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../fonts/jetbrains-mono-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+:root {
+  /* ========================================================================
+     1. COLOR SYSTEM
+     ======================================================================== */
+
+  --pk-primary: #1040a8;
+  --pk-primary-dark: #0b2d80;
+  --pk-primary-darker: #081c58;
+  --pk-primary-darkest: #050e30;
+  --pk-primary-light: #2060cc;
+  --pk-primary-lighter: #4487e8;
+  --pk-primary-lightest: #7ab3f5;
+  --pk-ice: #eff6ff;
+  --pk-ice-light: #e8f4fd;
+  --pk-sky: rgb(147 197 253 / 35%);
+  --pk-sky-bright: rgb(147 197 253 / 60%);
+  --pk-accent: #3b82f6;
+  --pk-teal: #06c8d8;
+  --pk-teal-dark: #0e7488;
+  --pk-amber: #e58c0a;
+  --pk-red: #ef4444;
+  --pk-green: #16a34a;
+  --pk-black: #000;
+  --pk-ink-1: #1d1d1f;
+  --pk-ink-2: #3a3a3c;
+  --pk-ink-3: #48484a;
+  --pk-ink-4: #636366;
+  --pk-grey-1: #8e8e93;
+  --pk-grey-2: #aeaeb2;
+  --pk-grey-3: #c7c7cc;
+  --pk-grey-4: #d1d1d6;
+  --pk-grey-5: #e5e5ea;
+  --pk-paper: #f5f5f7;
+  --pk-paper-2: #f2f2f4;
+  --pk-paper-3: #efefef;
+  --pk-paper-4: #ebebed;
+  --pk-white: #fff;
+
+  /* Semantic foreground / background / border */
+  --pk-fg-strong: var(--pk-ink-1);
+  --pk-fg: var(--pk-ink-2);
+  --pk-fg-muted: var(--pk-ink-4);
+  --pk-fg-subtle: var(--pk-grey-1);
+  --pk-fg-inverse: var(--pk-white);
+  --pk-fg-inverse-muted: rgb(255 255 255 / 75%);
+  --pk-fg-inverse-subtle: rgb(255 255 255 / 45%);
+  --pk-fg-inverse-dim: rgb(255 255 255 / 60%);
+  --pk-fg-inverse-secondary: rgb(255 255 255 / 85%);
+  --pk-fg-on-primary: #e8f4fd;
+  --pk-link: var(--pk-primary);
+  --pk-link-hover: var(--pk-accent);
+  --pk-bg: var(--pk-white);
+  --pk-bg-subtle: var(--pk-paper);
+  --pk-bg-section: #fafafb;
+  --pk-bg-deep: #081c58;
+  --pk-bg-deeper: #050e30;
+  --pk-border: var(--pk-grey-5);
+  --pk-border-strong: var(--pk-grey-4);
+  --pk-border-muted: #f0f0f2;
+  --pk-border-ink: var(--pk-ink-1);
+  --pk-border-on-dark: rgb(255 255 255 / 12%);
+  --pk-border-on-dark-subtle: rgb(255 255 255 / 8%);
+  --pk-bg-hover-on-dark: rgb(255 255 255 / 4%);
+  --pk-bg-active-on-dark: rgb(14 116 136 / 25%);
+
+  /* ========================================================================
+     2. TYPOGRAPHY TOKENS
+     ======================================================================== */
+
+  --pk-font-display: 'Space Grotesk', sans-serif;
+  --pk-font-body: 'IBM Plex Sans', -apple-system, system-ui, sans-serif;
+  --pk-font-mono: 'JetBrains Mono', 'Geist Mono', monospace;
+
+  --pk-text-3xs: 0.5rem;
+  --pk-text-2xs: 0.625rem;
+  --pk-text-xs: 0.75rem;
+  --pk-text-sm: 0.875rem;
+  --pk-text-base: 1rem;
+  --pk-text-md: 1.125rem;
+  --pk-text-lg: 1.375rem;
+  --pk-text-lg-xl: 1.5rem;
+  --pk-text-xl: 1.75rem;
+  --pk-text-2xl: 2.25rem;
+  --pk-text-3xl: 3rem;
+  --pk-text-4xl: 4rem;
+  --pk-text-5xl: 5.5rem;
+
+  --pk-lh-tight: 1.05;
+  --pk-lh-snug: 1.15;
+  --pk-lh-normal: 1.35;
+  --pk-lh-relaxed: 1.6;
+  --pk-lh-loose: 1.75;
+
+  --pk-track-tightest: -0.04em;
+  --pk-track-tight: -0.02em;
+  --pk-track-normal: 0;
+  --pk-track-wide: 0.04em;
+  --pk-track-widest: 0.16em;
+
+  /* ========================================================================
+     3. SPACING TOKENS
+     ======================================================================== */
+
+  --pk-s-0: 0;
+  --pk-s-1: 0.25rem;
+  --pk-s-2: 0.5rem;
+  --pk-s-3: 0.75rem;
+  --pk-s-4: 1rem;
+  --pk-s-5: 1.5rem;
+  --pk-s-6: 2rem;
+  --pk-s-7: 3rem;
+  --pk-s-8: 4rem;
+  --pk-s-9: 6rem;
+  --pk-s-10: 8rem;
+  --pk-s-11: 12rem;
+  --pk-s-12: 16rem;
+
+  /* ========================================================================
+     4. LAYOUT TOKENS
+     ======================================================================== */
+
+  --pk-container: 90rem;
+  --pk-container-narrow: 70rem;
+  --pk-container-wide: 100rem;
+  --pk-gutter: 3rem;
+  --pk-navbar-h: 5rem;
+
+  /* ========================================================================
+     5. BORDER, SHADOW, MOTION, Z-INDEX
+     ======================================================================== */
+
+  --pk-radius: 0;
+  --pk-radius-pill: 0;
+  --pk-hairline: 1px solid var(--pk-border);
+  --pk-divider: 1px solid var(--pk-border-strong);
+  --pk-shadow-0: none;
+  --pk-shadow-1: 0 1px 0 rgb(13 41 91 / 4%);
+  --pk-shadow-2: 0 12px 32px -16px rgb(13 41 91 / 12%);
+  --pk-shadow-3: 0 24px 56px -24px rgb(13 41 91 / 18%);
+  --pk-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --pk-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --pk-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --pk-dur-1: 120ms;
+  --pk-dur-2: 200ms;
+  --pk-dur-3: 320ms;
+  --pk-z-base: 0;
+  --pk-z-rise: 10;
+  --pk-z-sticky: 100;
+  --pk-z-overlay: 1000;
+  --pk-z-modal: 2000;
+}
+
+/* ========================================================================
+   Responsive navbar height
+   ======================================================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --pk-navbar-h: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --pk-navbar-h: 3.5rem;
+  }
+}
