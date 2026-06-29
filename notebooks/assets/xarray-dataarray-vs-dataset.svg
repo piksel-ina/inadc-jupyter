@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 270" width="700" height="263"
+     font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
+     font-size="14">
+  <title>One DataArray and one Dataset</title>
+  <desc>Left: one DataArray, drawn as a labelled grid with y/latitude on the vertical axis and x/longitude on the horizontal axis. Right: one Dataset, shown as bands times dates times one shared y, x grid, making clear that all DataArrays in the Dataset share the same grid.</desc>
+
+  <!-- LEFT PANEL: one DataArray -->
+  <text x="30" y="26" font-weight="700" font-size="14" fill="#222">one DataArray</text>
+
+  <rect x="75" y="50" width="150" height="150" fill="#fdf0f0" stroke="#666" stroke-width="1.2"/>
+  <line x1="100" y1="50" x2="100" y2="200" stroke="#c5c5c5"/>
+  <line x1="125" y1="50" x2="125" y2="200" stroke="#c5c5c5"/>
+  <line x1="150" y1="50" x2="150" y2="200" stroke="#c5c5c5"/>
+  <line x1="175" y1="50" x2="175" y2="200" stroke="#c5c5c5"/>
+  <line x1="200" y1="50" x2="200" y2="200" stroke="#c5c5c5"/>
+  <line x1="75"  y1="75"  x2="225" y2="75"  stroke="#c5c5c5"/>
+  <line x1="75"  y1="100" x2="225" y2="100" stroke="#c5c5c5"/>
+  <line x1="75"  y1="125" x2="225" y2="125" stroke="#c5c5c5"/>
+  <line x1="75"  y1="150" x2="225" y2="150" stroke="#c5c5c5"/>
+  <line x1="75"  y1="175" x2="225" y2="175" stroke="#c5c5c5"/>
+
+  <text x="60" y="125" font-size="12" fill="#333" text-anchor="middle" transform="rotate(-90 60 125)">y / latitude</text>
+  <text x="150" y="222" font-size="12" fill="#333" text-anchor="middle">x / longitude</text>
+  <text x="150" y="252" font-size="12" font-style="italic" fill="#666" text-anchor="middle">red, 2024-Jan</text>
+
+  <!-- Divider -->
+  <line x1="290" y1="30" x2="290" y2="220" stroke="#dcdcdc"/>
+
+  <!-- RIGHT PANEL: one Dataset (bands × dates × shared grid) -->
+  <text x="505" y="26" font-weight="700" font-size="14" fill="#222" text-anchor="middle">one Dataset</text>
+
+  <!-- Frame (tight) -->
+  <rect x="305" y="38" width="405" height="154" fill="none" stroke="#888" stroke-width="1.5"/>
+
+  <!-- Headers -->
+  <text x="365" y="58" font-weight="600" font-size="12" fill="#555" text-anchor="middle">bands</text>
+  <text x="495" y="58" font-weight="600" font-size="12" fill="#555" text-anchor="middle">dates</text>
+  <text x="640" y="58" font-weight="600" font-size="12" fill="#555" text-anchor="middle">y, x grid</text>
+
+  <!-- Bands -->
+  <text x="365" y="88"  font-weight="600" font-size="12" fill="#c33" text-anchor="middle">red</text>
+  <text x="365" y="110" font-weight="600" font-size="12" fill="#383" text-anchor="middle">green</text>
+  <text x="365" y="132" font-weight="600" font-size="12" fill="#37a" text-anchor="middle">blue</text>
+  <text x="365" y="154" font-weight="600" font-size="12" fill="#736" text-anchor="middle">nir</text>
+
+  <!-- × -->
+  <text x="430" y="125" font-size="22" fill="#888" text-anchor="middle">×</text>
+
+  <!-- Dates -->
+  <text x="495" y="88"  font-size="12" fill="#222" text-anchor="middle">2022</text>
+  <text x="495" y="110" font-size="12" fill="#222" text-anchor="middle">2023</text>
+  <text x="495" y="132" font-size="12" fill="#222" text-anchor="middle">2024</text>
+  <text x="495" y="154" font-size="12" fill="#222" text-anchor="middle">2025</text>
+
+  <!-- × -->
+  <text x="560" y="125" font-size="22" fill="#888" text-anchor="middle">×</text>
+
+  <!-- Shared y, x grid -->
+  <rect x="600" y="78" width="80" height="80" fill="#f6f6f6" stroke="#666" stroke-width="1.2"/>
+  <line x1="616" y1="78" x2="616" y2="158" stroke="#c5c5c5"/>
+  <line x1="632" y1="78" x2="632" y2="158" stroke="#c5c5c5"/>
+  <line x1="648" y1="78" x2="648" y2="158" stroke="#c5c5c5"/>
+  <line x1="664" y1="78" x2="664" y2="158" stroke="#c5c5c5"/>
+  <line x1="600" y1="94"  x2="680" y2="94"  stroke="#c5c5c5"/>
+  <line x1="600" y1="110" x2="680" y2="110" stroke="#c5c5c5"/>
+  <line x1="600" y1="126" x2="680" y2="126" stroke="#c5c5c5"/>
+  <line x1="600" y1="142" x2="680" y2="142" stroke="#c5c5c5"/>
+
+  <text x="640" y="178" font-size="11" font-style="italic" fill="#888" text-anchor="middle">shared by every band</text>
+
+  <!-- Caption -->
+  <text x="505" y="216" font-size="12" font-style="italic" fill="#666" text-anchor="middle">each band is a DataArray; all share the same time and y, x grid</text>
+</svg>
