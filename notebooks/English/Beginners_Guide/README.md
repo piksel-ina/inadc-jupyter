@@ -2,7 +2,7 @@
 
 ---
 
-The Beginner's Guide introduces Jupyter notebooks, the Open Data Cube, xarray, and Earth observation workflows. It is written for people with basic Python familiarity and does not assume previous experience with the Open Data Cube.
+The Beginner's Guide introduces Jupyter notebooks, the Open Data Cube, xarray, and Earth observation workflows. It is written for people with a basic familiarity with Python and assumes no previous experience with the Open Data Cube.
 
 The notebooks form a learning path and are best completed in order.
 
@@ -16,7 +16,7 @@ The notebooks form a learning path and are best completed in order.
 
 ## Exercise
 
-[Beginner's Guide exercise](./EXERCISE_Beginners_Guide.ipynb) applies the guide's Open Data Cube, xarray, and plotting skills to a different study area. A worked approach is available in the [Beginner's Guide exercise solution](./SOLUTION_Beginners_Guide.ipynb).
+[Beginner's Guide exercise](./EXERCISE_Beginners_Guide.ipynb) provides practice in applying the Open Data Cube, xarray, and plotting skills covered in the guide to a different study area. One possible solution is available in the [Beginner's Guide exercise solution](./SOLUTION_Beginners_Guide.ipynb).
 
 ## Author and maintainer
 
@@ -24,7 +24,7 @@ The notebooks form a learning path and are best completed in order.
 
 ## Contributors
 
-The guide grew from an earlier set of tutorials. The following contributors helped establish that material:
+The guide grew from an earlier set of tutorials. The following contributors helped develop that material:
 
 - [Alex G Leith](https://github.com/alexgleith): original tutorial material and technical development
 - [Matthew Ellis](https://github.com/Matt-dea): explanatory and editorial contributions to the earlier Open Data Cube, Landsat, and Sentinel tutorials
