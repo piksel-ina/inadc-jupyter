@@ -4,7 +4,7 @@
 
 > **Status:** This module is under development.
 
-The Data Product Guides will cover individual Earth observation products available through the Open Data Cube. They will build on the [Beginner's Guide](../Beginners_Guide/README.md) and focus on the characteristics and correct handling of each product.
+The Data Product Guides will cover individual Earth observation products available through the Open Data Cube. They will build on the [Beginner's Guide](../01_Beginners_Guide/README.md) and focus on the characteristics and correct handling of each product.
 
 ## Planned guides
 

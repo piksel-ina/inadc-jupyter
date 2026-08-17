@@ -19,9 +19,9 @@ There are no tests and no test runner configured.
 
 ## Notebook conventions
 
-- `notebooks/English/Beginners_Guide/` — tutorials, `NN_Name.ipynb` (underscores)
-- `notebooks/English/Case_Studies/` — analysis walkthroughs
-- `notebooks/Indonesia/01-Panduan-Pengguna/` — Indonesian translations, `NN-name.ipynb` (hyphens)
+- `notebooks/English/01_Beginners_Guide/` — tutorials, `NN_Name.ipynb` (underscores)
+- `notebooks/English/04_Case_Studies/` — analysis walkthroughs
+- `notebooks/Indonesia/01_Panduan_Pemula/` — Indonesian translations, `NN_name.ipynb` (underscores)
 - New notebooks pick the next number in sequence within the target directory
 - Standard cell order: `# Title` → `## Background` → `## Description` (numbered steps + `***`) → `## Getting started` → `### Load packages` → content → conclusion
 - Leave `execution_count: null` and `outputs: []` for new/cleaned cells

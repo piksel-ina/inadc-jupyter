@@ -28,10 +28,10 @@ project:
       children:
         - title: English
           children:
-            - file: ../notebooks/English/Beginners_Guide/03_Landsat_SR_GettingStarted.ipynb
+            - file: ../notebooks/English/02_Data_Product_Guides/03_Landsat_SR_GettingStarted.ipynb
         - title: Bahasa Indonesia
           children:
-            - file: ../notebooks/Indonesia/01-Panduan-Pengguna/02_Jupyter_notebook.ipynb
+            - file: ../notebooks/Indonesia/01_Panduan_Pemula/01_pengenalan_jupyter_notebook.ipynb
 
 site:
   template: book-theme
