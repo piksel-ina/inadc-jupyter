@@ -100,8 +100,13 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     jupyter lab build --dev-build=False --minimize=False && \
     rm -rf /home/jovyan/.cache /tmp/*
 
-RUN mkdir -p /usr/local/share/jupyter/lab/settings /etc/jupyter
-COPY docker/jupyter-dev/overrides.json /usr/local/share/jupyter/lab/settings/overrides.json
+RUN mkdir -p \
+    /etc/jupyter \
+    /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/filebrowser-extension && \
+    chown -R jovyan:jovyan /home/jovyan/.jupyter
+COPY docker/shared/overrides.json /app/.venv/share/jupyter/lab/settings/overrides.json
+COPY --chown=jovyan:jovyan docker/jupyter-dev/browser.jupyterlab-settings \
+    /home/jovyan/.jupyter/lab/user-settings/@jupyterlab/filebrowser-extension/browser.jupyterlab-settings
 COPY docker/shared/jupyter_server_config.py /etc/jupyter/jupyter_server_config.py
 COPY docker/shared/jupyter_lab_config.py /etc/jupyter/jupyter_lab_config.py
 ENV JUPYTER_CONFIG_PATH=/etc/jupyter:/home/jovyan/.jupyter

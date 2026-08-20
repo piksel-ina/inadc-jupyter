@@ -98,8 +98,7 @@ COPY docker/shared/jupyter_lab_config.py /etc/jupyter/
 COPY docker/shared/jupyter_server_config.py /etc/jupyter/
 ENV JUPYTER_CONFIG_PATH=/etc/jupyter:${HOME}/.jupyter
 
-RUN mkdir -p /usr/local/share/jupyter/lab/settings
-COPY docker/shared/overrides.json /usr/local/share/jupyter/lab/settings/overrides.json
+COPY docker/shared/overrides.json /app/.venv/share/jupyter/lab/settings/overrides.json
 
 RUN mkdir -p /etc/skel/.config
 COPY docker/shared/starship.toml /etc/skel/.config/starship.toml

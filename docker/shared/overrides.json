@@ -9,7 +9,9 @@
     "closeOnExit": false,
     "pasteWithCtrlV": true
   },
-  "@jupyterlab/filebrowser-extension:browser": {},
+  "@jupyterlab/filebrowser-extension:browser": {
+    "navigateToCurrentDirectory": true
+  },
   "@jupyterlab/apputils-extension:notification": {
     "fetchNews": "false"
   },
