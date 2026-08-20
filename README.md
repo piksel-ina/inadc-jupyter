@@ -6,13 +6,13 @@ Jupyter environments and tutorial notebooks for the [BIG Piksel platform](https:
 
 ```
 inadc-jupyter/
+├── assets/               Shared assets for notebooks
 ├── docker/
 │   ├── jupyter/          Production Jupyter Lab image (GDAL base + uv)
 │   └── jupyter-dev/      Development Jupyter Lab image (GDAL base + uv + dev tools)
 └── notebooks/
     ├── English/          Tutorial notebooks (English)
-    ├── Indonesia/        Tutorial notebooks (Bahasa Indonesia)
-    └── assets/           Shared assets for notebooks
+    └── Indonesia/        Tutorial notebooks (Bahasa Indonesia)
 ```
 
 ## Docker images
