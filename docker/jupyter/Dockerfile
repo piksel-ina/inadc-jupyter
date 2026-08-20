@@ -110,9 +110,10 @@ COPY --chown=${NB_USER}:${NB_USER} docker/jupyter/bashrc ${HOME}/.bashrc
 COPY docker/jupyter/start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
+COPY docker/jupyter/scripts/initialize_home.sh /usr/local/bin/initialize_home.sh
 COPY docker/jupyter/scripts/memory_watchdog.py /usr/local/bin/memory_watchdog.py
 COPY docker/jupyter/scripts/disk_monitor.sh /usr/local/bin/disk_monitor.sh
-RUN chmod +x /usr/local/bin/memory_watchdog.py /usr/local/bin/disk_monitor.sh
+RUN chmod +x /usr/local/bin/initialize_home.sh /usr/local/bin/memory_watchdog.py /usr/local/bin/disk_monitor.sh
 
 RUN git config --system --add safe.directory '*'
 

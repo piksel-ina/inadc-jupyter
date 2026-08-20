@@ -90,7 +90,8 @@ FROM user-setup AS final-image
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     JUPYTER_ENABLE_LAB=yes \
-    JUPYTER_SHOW_HIDDEN=true
+    JUPYTER_SHOW_HIDDEN=true \
+    HOME=/home/jovyan
 
 COPY --from=builder /app/.venv /app/.venv
 ENV PATH="/app/.venv/bin:$PATH"
@@ -111,9 +112,10 @@ COPY --chown=jovyan:jovyan docker/shared/starship.toml /home/jovyan/.config/star
 COPY docker/jupyter-dev/bashrc /etc/skel/.bashrc
 COPY --chown=jovyan:jovyan docker/jupyter-dev/bashrc /home/jovyan/.bashrc
 
+COPY docker/jupyter/scripts/initialize_home.sh /usr/local/bin/initialize_home.sh
 COPY docker/jupyter/scripts/memory_watchdog.py /usr/local/bin/memory_watchdog.py
 COPY docker/jupyter/scripts/disk_monitor.sh /usr/local/bin/disk_monitor.sh
-RUN chmod +x /usr/local/bin/memory_watchdog.py /usr/local/bin/disk_monitor.sh
+RUN chmod +x /usr/local/bin/initialize_home.sh /usr/local/bin/memory_watchdog.py /usr/local/bin/disk_monitor.sh
 
 COPY docker/jupyter-dev/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

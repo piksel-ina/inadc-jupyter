@@ -63,6 +63,5 @@ export PATH="$HOME/.local/bin:$PATH"
 eval "$(starship init bash)"
 
 # Welcome message
-echo "🚀   Development Environment Ready!"
 echo "🐍   Python: $(python3 --version 2>&1)"
 echo "⚡   UV: $(uv --version 2>&1)"

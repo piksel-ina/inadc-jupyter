@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+/usr/local/bin/initialize_home.sh
+
 echo " --- Environment ---"
 echo "PATH: $PATH"
 echo "which jupyter-lab: $(which jupyter-lab || echo 'NOT FOUND')"
