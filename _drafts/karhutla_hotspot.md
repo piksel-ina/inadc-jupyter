@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-| <h1><b>Pergerakan Titik Api di Karhutla</b></h1> | ![](files/piksel-logo-small.png) |
+| <h1><b>Pergerakan Titik Api di Karhutla</b></h1> | ![](files/piksel_logo_small.png) |
 |:---------|----------:|
 - **Lokasi:** Kawasan Bromo, Prov Jawa Timur
 - **Metode:** Penggunaan data VIIRS untuk menampilkan hotspot dalam monitoring karhutla
@@ -20,13 +20,13 @@ kernelspec:
 +++
 
 # Pendahuluan
-Kebakaran hutan dan lahan (Karhutla) di Indonesia sering terjadi di musim kering. Citra satelit dapat digunakan untuk memonitor pergerakan api dan dampak kebakaran dari suatu area. Modul ini bertujuan untuk menunjukkan penggunaan data VIIRS (Visible Infrared Imaging Radiometer Suite) untuk memetakan asal mula dan pergerakan titik api (hotaspot). Kebakaran di area gunun Bromo, Provinsi Jawa Timur [🔗](https://maps.app.goo.gl/DnYGMXrB6riAFGkp8) yang terjadi di bulan Agustus 2026. 
+Kebakaran hutan dan lahan (Karhutla) di Indonesia sering terjadi di musim kering. Citra satelit dapat digunakan untuk memonitor pergerakan api dan dampak kebakaran dari suatu area. Modul ini bertujuan untuk menunjukkan penggunaan data VIIRS (Visible Infrared Imaging Radiometer Suite) untuk memetakan asal mula dan pergerakan titik api (hotspot). Kebakaran di area gunung Bromo, Provinsi Jawa Timur [🔗](https://maps.app.goo.gl/DnYGMXrB6riAFGkp8) yang terjadi di bulan Agustus 2026. 
 
 +++
 
 # Tahapan
 
-Tahapan dalam identifikasi area berpotensi banjir adalah sebagai berikut:
+Tahapan dalam identifikasi area rawan titik api (hotspot) karhutla adalah sebagai berikut:
 1. Persiapan
 2. Download data VIIRS
 3. Verifikasi data
@@ -539,7 +539,7 @@ plt.show()
 ```
 
 ### D. Awal kebakaran
-DEM ditampilkan dalam bentuk peta dan visualisasi 3 dimensi
+Rekaman hotspot pertama yang terdeteksi ditampilkan untuk mengetahui titik dan waktu awal mula kemunculan api.
 
 ```{code-cell} ipython3
 first_detection = (
@@ -1261,7 +1261,7 @@ print(
 ```
 
 # Catatan
-Pengolahan data VIIRS telah memeberikan gambaran awal mula dan sebaran titik api pada kebakaran di kawasan Bromo. Animasi hotspot lebih bermanfaat untuk memvisualisasi pergerakan titik api. 
+Pengolahan data VIIRS telah memberikan gambaran awal mula dan sebaran titik api pada kebakaran di kawasan Bromo. Animasi hotspot lebih bermanfaat untuk memvisualisasi pergerakan titik api. 
 
 +++
 
