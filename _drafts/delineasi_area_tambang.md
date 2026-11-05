@@ -14,7 +14,7 @@ kernelspec:
 | <h1><b>Menghitung Luas Area Pertambangan</b></h1> | ![](files/piksel_logo_small.png) |
 |:---------|----------:|
 - **Data:** Sentinel-2
-- **Lokasi:** Pertambangan Nickel di Pulau Gag, Raja Ampat
+- **Lokasi:** Pertambangan nikel di Pulau Gag, Raja Ampat
 - **Metode:** Bare Soil Index (BSI)
 
 +++
@@ -50,7 +50,7 @@ dc = Datacube()
 ```
 
 ## 2. Menentukan wilayah
-Area yang akan diproses ditentukan dan ditampilkan. Kalau area terlihat seperti segitiga tidak apa-apa karena cakupan wilayah nya yang kecil.
+Area yang akan diproses ditentukan dan ditampilkan. Kalau area terlihat seperti segitiga tidak apa-apa karena cakupan wilayahnya yang kecil.
 
 ```{code-cell} ipython3
 # Lokasi Pulau Gag
@@ -175,7 +175,7 @@ print(f"Luas area: {area_km2:.2f} km² atau {area_ha:.2f} hektar")
 ```
 
 # Catatan
-Luas area pertambangan berhasil dihitung menggunakan data Sentinel-2 dan metode Bare Soil Index (BSI). Penggunaan BSI dapat digunakan juga untuk menghitung luas lahan terbuka lain nya.
+Luas area pertambangan berhasil dihitung menggunakan data Sentinel-2 dan metode Bare Soil Index (BSI). Penggunaan BSI dapat digunakan juga untuk menghitung luas lahan terbuka lainnya.
 
 +++
 
