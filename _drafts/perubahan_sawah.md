@@ -73,13 +73,13 @@ region.explore(tiles=basemaps.Esri.WorldImagery)
 Tahap ini bertujuan untuk mengidentifikasi dan menentukan data yang diperlukan untuk mendukung analisis. Pada tahap ini dimuat scene citra termutakhir untuk perbandingan data akhir.
 
 ```{code-cell} ipython3
-datetime = ("2026")
+datetime_2026 = "2026"
 data = dc.load(
     product="s2_l2a",
     measurements=["red", "green", "blue", "nir", "swir16"],
     output_crs="EPSG:32748",
     resolution=10,
-    time=datetime,
+    time=datetime_2026,
     longitude=(bbox.left, bbox.right),
     latitude=(bbox.bottom, bbox.top),
     dask_chunks={},
@@ -111,7 +111,7 @@ rgb.plot.imshow(
 Tahap ini dimuat kembali scene citra, namun menggunakan scene citra terdahulu untuk perbandingan data awal.
 
 ```{code-cell} ipython3
-datetime_2023 = ("2023")
+datetime_2023 = "2023"
 data_2023 = dc.load(
     product="s2_l2a",
     measurements=["red", "green", "blue", "nir", "swir16"],
