@@ -26,7 +26,7 @@ Kebakaran hutan dan lahan (karhutla) dapat menyebabkan perubahan kondisi vegetas
 
 # Tahapan
 
-Tahapan dalam identifikasi area berpotensi banjir adalah sebagai berikut:
+Tahapan dalam identifikasi area yang berpotensi terbakar adalah sebagai berikut:
 1. Persiapan
 2. Memuat data
 3. Perhitungan NBR
@@ -122,8 +122,8 @@ for t in ds.time.values:
 
 ## 3. Perhitungan NBR
 Normalized Burn Ratio (NBR) adalah indeks spektral dari citra satelit yang digunakan untuk mendeteksi dan memetakan area bekas kebakaran hutan dan lahan (burned area). NBR memanfaatkan perbedaan respons spektral vegetasi pada kanal Near-Infrared (NIR) dan Shortwave Infrared (SWIR).
-BSI menggunakan formula:
-$$BSI = \frac{(NIR - SWIR22)}{(NIR + SWIR22)}$$
+NBR menggunakan formula:
+$$NBR = \frac{(NIR - SWIR22)}{(NIR + SWIR22)}$$
 dimana:
 - NIR = Near Infrared (Band 8)
 - SWIR = Short Wave Infrared (Band 12)
