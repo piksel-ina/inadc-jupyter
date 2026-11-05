@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-| <h1><b>Identifikasi Zona Bahaya Banjir</b></h1> | ![](files/piksel-logo-small.png) |
+| <h1><b>Identifikasi Zona Bahaya Banjir</b></h1> | ![](files/piksel_logo_small.png) |
 |:---------|----------:|
 - **Data:** DEM, Sentinel-2
 - **Lokasi:** Kabupaten Bangka Barat, Prov. Kepulauan Babel
