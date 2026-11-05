@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-| <h1><b>Identifikasi Area Banjir</b></h1> | ![](files/piksel-logo-small.png)  |
+| <h1><b>Identifikasi Area Banjir</b></h1> | ![](files/piksel_logo_small.png)  |
 |:---------|----------:|
 - **Data:** Sentinel-1
 - **Lokasi:** Kab. Aceh Utara, Provinsi Aceh
