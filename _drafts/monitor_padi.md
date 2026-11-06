@@ -66,7 +66,7 @@ dc = datacube.Datacube()
 Menentukan lokasi dan periode untuk pemrosesan data sebelum membuka data.
 
 ```{code-cell} ipython3
-# Lokasi [sekitar 5:25 menit]
+# diproses sekitar 5:25 menit
 latitude = (-6.315, -6.290)
 longitude = (107.390, 107.440)
 
