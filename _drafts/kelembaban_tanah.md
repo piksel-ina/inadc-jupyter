@@ -196,12 +196,12 @@ Perhitungan _soil moisture index_ dari nilai backscatter. Nilai backscatter yang
 
 ```{code-cell} ipython3
 # fungsi untuk menghitung soil moisture index 
-def calculate_soil_moisture_index(vv_db, vh_db):
+def calculate_soil_moisture_index(vv_db):
     # Normalize backscatter values
     smi = (vv_db - vv_db.min()) / (vv_db.max() - vv_db.min())
     return smi
 
-data_s1['soil_moisture_index'] = calculate_soil_moisture_index(data_s1['vv_db'], data_s1['vh_db'])
+data_s1['soil_moisture_index'] = calculate_soil_moisture_index(data_s1['vv_db'])
 soil_moisture_mean = data_s1['soil_moisture_index'].mean(dim='time')
 ```
 
@@ -218,7 +218,7 @@ labels = ['Tubuh Air', 'Tanah Kering', 'Tanah Sedang', 'Tanah Lembab']
 cmap = ListedColormap(colors)
 norm = BoundaryNorm(bounds, ncolors=len(colors))
 dpi = 300
-fig_width = 893/250
+fig_width = 893/300
 fig_height = 890/300
 plt.figure(figsize=(fig_width, fig_height), dpi=dpi)
 im = soil_moisture_mean.plot(cmap=cmap, norm=norm, add_colorbar=False)
