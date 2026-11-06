@@ -48,7 +48,6 @@ Library yang diperlukan dimuat ke sistem dan melakukan inisialisasi datacube.
 ```{code-cell} ipython3
 %matplotlib inline
 
-import datacube
 import numpy as np
 from planetary_computer import sign_url
 from pystac_client import Client as pClient
@@ -58,8 +57,6 @@ from odc.stac import load
 from odc.geo.geom import point
 import matplotlib.pyplot as plt
 from ipyleaflet import basemaps
-
-dc = datacube.Datacube(app="Monitoring_kapal")
 ```
 
 Selain itu, dibuat setting untuk akses data Sentinel-1.
@@ -174,12 +171,6 @@ plt.show()
 ```
 
 # Catatan
-Terdapat 3 danau yang dapat dilihat (dari Utara ke Selatan) yaitu danau Abut, danau Kootainuamuri, dan danau Alapolo. Dari pantauan citra satelit Sentinel-2 pada tahun 2024, dapat disampaikan bahwa:
-1. Danau Abut berubah warna menjadi abu-abu di bulan Oktober
-2. Danau Kootainuamuri berwarnac cyan kecuali di bulan September - Oktober 
-3. Danau Alapolo mengalami perubahan warna yang dinamis: biru muda, gelap, dan cyan
-
-Luas area danau berhasil dihitung menggunakan data Sentinel-2 dan metode MNDWI (Modified Normalized Difference Water Index). MNDWI dapat mendeteksi wilayah perairan (danau) dengan non perairan.
 
 +++
 
