@@ -172,6 +172,8 @@ plt.show()
 
 # Catatan
 
+Modul ini telah menunjukkan penggunaan data radar Sentinel-1 untuk mengidentifikasikan aktifitas di pelabuhan Makassar. Kemampuan data radar yang tidak dibatasi dengan tutupan awan telah dapat digunakan dengan baik untuk analisis keruangan.
+
 +++
 
 # Info
