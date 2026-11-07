@@ -77,7 +77,7 @@ Sebelum memuat data, Wilayah dan waktu yang digunakan untuk studi ini ditetapkan
 aoi = {
     'latitude': (-8.716, -8.748),
     'longitude': (115.189, 115.213),
-    'crs': 'EPSG:32750'
+    'crs': 'EPSG:4326'
 }
 # rentang waktu data
 time_range = ('2024-03-01', '2024-06-30')
@@ -238,7 +238,7 @@ Sebelum dilakukan klasifikasi dengan menggunakan _machine learning_, maka perlu 
 ```{code-cell} ipython3
 # Function untuk menyiapkan training data
 def prepare_training_data(ds, masks, sample_size=100):
-    features = ['blue', 'green', 'red', 'nir_1', 'swir_1', 'ndvi', 'ndwi', 'mvi', 'ui']
+    features = ['blue', 'green', 'red', 'nir_1', 'swir_1', 'ndvi', 'mvi', 'ui']
     X_list = []; y_list = []
     
     for class_id, (class_name, mask) in enumerate(masks.items()):
@@ -374,7 +374,6 @@ if 'rf_classifier' in locals() and rf_classifier is not None:
         print("\n🔴 Ranking Feature Importance:")
         print(feature_importance_df)
         # Plot feature importance
-        plt.figure(figsize=(12, 8))
         # Membuat two subplots
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
         # Bar plot
@@ -434,7 +433,7 @@ else:
 ```
 
 Dari data feature importance, dapat disampaikan bahwa:
-1. Indeks spektral (MVI, NDWI, NDVI) dan band inframerah (NIR, SWIR) adalah fitur paling informatif untuk membedakan kelas mangrove, air, vegetasi lain, dan non-vegetasi.
+1. Indeks spektral (MVI, NDVI) dan band inframerah (NIR, SWIR) adalah fitur paling informatif untuk membedakan kelas mangrove, air, vegetasi lain, dan non-vegetasi.
 2. Band visual (Red, Green, Blue) tetap berkontribusi, tapi relatif lebih kecil.
 
 +++
@@ -603,10 +602,9 @@ Hasil dari cross-validation menunjukkan:
 Hasil dari analisa mangrove disimpan di folder `hasil_klas_mangrove`:
 1. Array klasifikasi
 2. Informasi koordinat
-3. Array klasifikasi
-4. Laporan klasifikasi
-5. Feature importance
-6. Peta klasifikasi mangrove
+3. Laporan klasifikasi
+4. Feature importance
+5. Peta klasifikasi mangrove
 
 ```{code-cell} ipython3
 # Fungsi untuk menyimpan hasil
