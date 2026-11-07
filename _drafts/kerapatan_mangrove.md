@@ -199,7 +199,7 @@ for year, acquisition_date in ANALYSIS_DATES.items():
 ```
 
 ### d. Memuat citra 
-- Memuat citra Sentinel-2A di setiap tahun pengamatan
+- Memuat citra Sentinel-2 di setiap tahun pengamatan
 - Menampilkan komposit warna alami (RGB) untuk membantu dalam menganalisis kondisi umum tutupan lahan di wilayah penelitian
 
 ```{code-cell} ipython3
