@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 250" width="960" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustrasi hamburan balik radar SAR</title>
+  <desc id="desc">Empat panel ilustrasi geometri hamburan balik radar SAR pada genangan air, daratan kasar, tajuk rapat, dan permukiman tergenang.</desc>
+
+  <defs>
+    <style>
+      .font { font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; }
+      .panel-title { font-size: 13px; font-weight: 700; fill: #0f172a; }
+      .card { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.2; rx: 10; }
+      .ray-solid { stroke: #1e293b; stroke-width: 2.2; fill: none; }
+      .ray-dash { stroke: #1e293b; stroke-width: 1.6; stroke-dasharray: 5 4; fill: none; opacity: 0.7; }
+    </style>
+
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#1e293b"/>
+    </marker>
+
+    <g id="satellite">
+      <rect x="-15" y="-3" width="11" height="6" rx="1" fill="#1e3a8a"/>
+      <rect x="4" y="-3" width="11" height="6" rx="1" fill="#1e3a8a"/>
+      <rect x="-4" y="-4" width="8" height="8" rx="1.5" fill="#334155"/>
+      <line x1="0" y1="4" x2="0" y2="9" stroke="#334155" stroke-width="1.5"/>
+      <circle cx="0" cy="9.5" r="1.5" fill="#1e293b"/>
+    </g>
+  </defs>
+
+  <rect width="960" height="250" fill="#ffffff"/>
+
+  <!-- ==================== PANEL 1: Genangan air ==================== -->
+  <g transform="translate(16, 12)">
+    <rect width="222" height="226" class="card"/>
+    <text x="111" y="24" text-anchor="middle" class="font panel-title">Genangan air</text>
+
+    <use href="#satellite" x="42" y="54"/>
+
+    <rect x="14" y="190" width="194" height="24" rx="4" fill="#d6d3d1"/>
+    <rect x="14" y="180" width="194" height="14" rx="2" fill="#38bdf8"/>
+    <line x1="14" y1="180" x2="208" y2="180" stroke="#0284c7" stroke-width="1.5"/>
+
+    <line x1="50" y1="68" x2="112" y2="176" class="ray-solid" marker-end="url(#arr)"/>
+    <line x1="114" y1="177" x2="188" y2="72" class="ray-dash" marker-end="url(#arr)"/>
+  </g>
+
+  <!-- ==================== PANEL 2: Daratan kasar ==================== -->
+  <g transform="translate(251, 12)">
+    <rect width="222" height="226" class="card"/>
+    <text x="111" y="24" text-anchor="middle" class="font panel-title">Daratan kasar</text>
+
+    <use href="#satellite" x="42" y="54"/>
+
+    <path d="M 14 186 Q 26 178 38 186 T 62 186 T 86 186 T 110 186 T 134 186 T 158 186 T 182 186 T 208 186 L 208 214 L 14 214 Z" fill="#a8a29e"/>
+    <path d="M 14 186 Q 26 178 38 186 T 62 186 T 86 186 T 110 186 T 134 186 T 158 186 T 182 186 T 208 186" fill="none" stroke="#57534e" stroke-width="1.6"/>
+
+    <line x1="50" y1="68" x2="112" y2="178" class="ray-solid" marker-end="url(#arr)"/>
+    <line x1="110" y1="178" x2="60" y2="88" class="ray-dash" marker-end="url(#arr)"/>
+    <line x1="113" y1="178" x2="108" y2="118" class="ray-dash" marker-end="url(#arr)"/>
+    <line x1="116" y1="178" x2="150" y2="122" class="ray-dash" marker-end="url(#arr)"/>
+    <line x1="118" y1="178" x2="176" y2="148" class="ray-dash" marker-end="url(#arr)"/>
+  </g>
+
+  <!-- ==================== PANEL 3: Tajuk rapat ==================== -->
+  <g transform="translate(486, 12)">
+    <rect width="222" height="226" class="card"/>
+    <text x="111" y="24" text-anchor="middle" class="font panel-title">Tajuk rapat</text>
+
+    <use href="#satellite" x="42" y="54"/>
+
+    <rect x="14" y="194" width="194" height="20" rx="4" fill="#d6d3d1"/>
+    <rect x="14" y="186" width="194" height="10" rx="2" fill="#7dd3fc"/>
+
+    <rect x="92" y="156" width="8" height="32" fill="#78350f"/>
+    <rect x="142" y="160" width="8" height="28" fill="#78350f"/>
+    <circle cx="96" cy="140" r="24" fill="#16a34a" opacity="0.88"/>
+    <circle cx="120" cy="132" r="26" fill="#15803d" opacity="0.9"/>
+    <circle cx="148" cy="144" r="23" fill="#22c55e" opacity="0.85"/>
+
+    <line x1="50" y1="68" x2="100" y2="126" class="ray-solid" marker-end="url(#arr)"/>
+    <polyline points="103,130 124,140 112,152 136,146" fill="none" stroke="#fef08a" stroke-width="1.8"/>
+    <line x1="98" y1="132" x2="60" y2="84" class="ray-dash" marker-end="url(#arr)"/>
+    <line x1="118" y1="126" x2="102" y2="90" class="ray-dash" marker-end="url(#arr)"/>
+    <line x1="138" y1="128" x2="168" y2="96" class="ray-dash" marker-end="url(#arr)"/>
+  </g>
+
+  <!-- ==================== PANEL 4: Permukiman tergenang ==================== -->
+  <g transform="translate(721, 12)">
+    <rect width="222" height="226" class="card"/>
+    <text x="111" y="24" text-anchor="middle" class="font panel-title">Permukiman tergenang</text>
+
+    <use href="#satellite" x="42" y="54"/>
+
+    <rect x="14" y="192" width="194" height="22" rx="4" fill="#d6d3d1"/>
+    <rect x="14" y="180" width="194" height="14" rx="2" fill="#38bdf8"/>
+
+    <rect x="136" y="112" width="54" height="68" fill="#e2e8f0" stroke="#475569" stroke-width="1.6"/>
+    <polygon points="130,112 163,90 196,112" fill="#94a3b8" stroke="#475569" stroke-width="1.5"/>
+    <rect x="148" y="126" width="11" height="12" fill="#64748b"/>
+    <rect x="167" y="126" width="11" height="12" fill="#64748b"/>
+    <rect x="157" y="152" width="12" height="28" fill="#475569"/>
+
+    <line x1="50" y1="68" x2="108" y2="177" class="ray-solid" marker-end="url(#arr)"/>
+    <polyline points="110,179 135,150 62,76" class="ray-dash" marker-end="url(#arr)"/>
+  </g>
+</svg>
