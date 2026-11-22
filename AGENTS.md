@@ -73,11 +73,11 @@ Check nearby Markdown drafts and repository documentation first. Do not infer a 
 Notebook code must be checked in the development container, not only in the host Python environment. The Compose service joins the external `piksel-net` network and uses the ODC/Postgres connection configured in `docker-compose.yml`.
 
 ```bash
-make up       # Requires the inadc-core/piksel-core ODC stack
+make up       # Needs a running ODC, e.g. inadc-odc
 make ps
 ```
 
-If startup or connection fails because the core stack is absent, `piksel-net` is unavailable, Docker access is denied, or the configured database cannot be reached, stop and ask the user how that environment should be started. Do not invent connection values, switch databases, or change credentials to make an example run.
+If startup or connection fails because the ODC stack is absent, `piksel-net` is unavailable, Docker access is denied, or the configured database cannot be reached, stop and ask the user how that environment should be started. Do not invent connection values, switch databases, or change credentials to make an example run.
 
 ### 3. Discover and verify the available data
 
