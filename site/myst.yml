@@ -17,9 +17,7 @@ project:
     - tutorials
     - case studies
     - reproducible workflows
-  license:
-    content: CC-BY-4.0
-    code: MIT
+  license: Apache-2.0
   github: https://github.com/piksel-ina/inadc-jupyter
 
   toc:

@@ -1,44 +1,31 @@
 # INADC Jupyter
 
-Jupyter environments and tutorial notebooks for the [BIG Piksel platform](https://piksel-ina.github.io/piksel-core/) — Indonesia's satellite data analysis infrastructure built on [Open Data Cube](https://www.opendatacube.org/).
+Docker images and tutorial notebooks for the [Piksel platform](https://piksel.big.go.id) (Digital Earth Indonesia), built on [Open Data Cube](https://www.opendatacube.org/). The images provide the JupyterLab environment, and the notebooks are the tutorials and case studies that JupyterHub delivers to users.
 
-## Repository structure
+The notebooks and the Docker images live in one repository so that every dependency a notebook needs is installed by the image. Dependencies are added only when a notebook needs them, to keep the images small. Packages are managed with [uv](https://docs.astral.sh/uv/).
 
-```
-inadc-jupyter/
-├── assets/               Shared assets for notebooks
-├── docker/
-│   ├── jupyter/          Production Jupyter Lab image (GDAL base + uv)
-│   └── jupyter-dev/      Development Jupyter Lab image (GDAL base + uv + dev tools)
-└── notebooks/
-    ├── English/          Tutorial notebooks (English)
-    └── Indonesia/        Tutorial notebooks (Bahasa Indonesia)
-```
+- `notebooks/`: the notebook collection displayed in the [Sandbox](https://sandbox.piksel.big.go.id).
+- `docker/`: the Docker images.
+- `site/`: a web gallery of the notebooks, under development.
+- `assets/`: images shared by the notebooks.
+- `pyproject.toml`: the single list of dependencies for the images and the notebooks.
 
 ## Docker images
 
-Two images are built from this repo and pushed to AWS ECR:
+- Public Sandbox image: the environment delivered for most users of the Sandbox.
+- Developer Sandbox image: a less restricted environment for product development.
 
-| Image | Dockerfile | ECR repo | Tag pattern |
-|-------|-----------|----------|-------------|
-| Production | `docker/jupyter/Dockerfile` | `jupyter-lab` | `jupyter-*` |
-| Development | `docker/jupyter-dev/Dockerfile` | `jupyter-dev` | `dev-jupyter-*` |
-
-Both images are based on `ghcr.io/osgeo/gdal:ubuntu-small-3.12.0` and use [uv](https://docs.astral.sh/uv/) for Python dependency management.
-
-### Building locally
-
-```bash
-# Production image
-docker build -t jupyter-lab -f docker/jupyter/Dockerfile .
-
-# Development image
-docker build -t jupyter-dev -f docker/jupyter-dev/Dockerfile .
-```
+For building and releasing, see [docker/README.md](docker/README.md).
 
 ## Notebooks
 
-Tutorial notebooks are delivered to running Jupyter instances via [nbgitpuller](https://github.com/jupyterhub/nbgitpuller). When users log in to JupyterHub, nbgitpuller pulls the latest notebooks from this repository into their workspace.
+Learning material from guided tutorials to full case studies, in English and Indonesian. By convention, notebooks are committed without outputs. See [notebooks/README.md](notebooks/README.md).
+
+## Getting started
+
+This is for developing the notebooks or the Docker images, not for running the notebooks as a Sandbox user.
+
+`make up` starts the Developer Sandbox image, which needs a running Open Data Cube. We recommend [inadc-odc](https://github.com/piksel-ina/inadc-odc), which has a quick datacube setup and product definitions, and keeps the datacube version consistent across development. Any other ODC setup can be used. Run `make help` for the other commands.
 
 ## License
 

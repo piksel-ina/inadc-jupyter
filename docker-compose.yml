@@ -1,5 +1,5 @@
-# Connects to the inadc-core (piksel-core) ODC stack via the shared piksel-net network.
-# Ensure the inadc-core stack is running before starting this service.
+# Connects to an ODC stack via the shared piksel-net network. inadc-odc is recommended.
+# Ensure the ODC stack is running before starting this service.
 
 services:
   jupyter:

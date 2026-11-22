@@ -23,7 +23,7 @@ build: ## Build the Jupyter Docker image
 	$(DOCKER_COMPOSE) build jupyter
 
 .PHONY: up
-up: ## Start Jupyter (requires inadc-core stack running)
+up: ## Start Jupyter (needs a running ODC, e.g. inadc-odc)
 	@echo "$(BLUE)Starting Jupyter...$(NC)"
 	@$(DOCKER_COMPOSE) up -d && \
 	echo "$(GREEN)Jupyter available at http://localhost:8888$(NC)"

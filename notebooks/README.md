@@ -34,6 +34,10 @@ Terapkan pengetahuan dari seri sebelumnya dalam alur kerja sains data geospasial
 
 ::::
 
+## Berkontribusi
+
+Punya use case yang ingin dibagikan melalui Piksel? Baca [Panduan Kontribusi](Kontribusi.md).
+
 ```{warning} Simpan pekerjaan dengan aman
 Pembaruan tutorial dapat menimpa perubahan pada notebook. Sebelum mengedit, buat dan gunakan salinan notebook di luar folder tutorial. Berkas di ruang kerja tidak dijamin tersimpan secara permanen; cadangkan berkas penting ke penyimpanan eksternal.
 ```
