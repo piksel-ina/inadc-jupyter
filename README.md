@@ -7,7 +7,7 @@ The notebooks and the Docker images live in one repository so that every depende
 - `notebooks/`: the notebook collection displayed in the [Sandbox](https://sandbox.piksel.big.go.id).
 - `docker/`: the Docker images.
 - `site/`: a web gallery of the notebooks, under development.
-- `assets/`: images shared by the notebooks.
+- `notebooks/assets/`: images shared by the notebooks.
 - `pyproject.toml`: the single list of dependencies for the images and the notebooks.
 
 ## Docker images

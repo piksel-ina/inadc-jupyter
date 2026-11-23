@@ -1,6 +1,6 @@
 ######
 
-![](../assets/piksel_header.webp)
+![](assets/piksel_header.webp)
 
 **Piksel Sandbox** adalah lingkungan cloud interaktif untuk mempelajari dan menganalisis data pengamatan Bumi di Indonesia dengan Open Data Cube.
 
