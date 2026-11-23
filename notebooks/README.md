@@ -34,6 +34,12 @@ Terapkan pengetahuan dari seri sebelumnya dalam alur kerja sains data geospasial
 
 ::::
 
+## Menggunakan AI di Sandbox
+
+Asisten AI (seperti ChatGPT, Claude, atau Gemini) dapat membantu menulis kode, mencari penyebab error, dan merapikan alur analisis di Piksel Sandbox. Namun, tanpa konteks yang tepat, AI sering menebak nama produk, nama band, atau memuat data terlalu besar untuk memori Sandbox.
+
+Untuk hasil yang lebih akurat, salin seluruh isi [prompt.md](prompt.md) sebagai pesan awal saat memulai percakapan dengan asisten AI di browser, lalu jalankan langkahnya secara bertahap di notebook Anda.
+
 ## Berkontribusi
 
 Punya use case yang ingin dibagikan melalui Piksel? Baca [Panduan Kontribusi](Kontribusi.md).
